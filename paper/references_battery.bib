@@ -1,0 +1,396 @@
+% references_battery.bib -- bibliography for paper/battery.tex
+% Every DOI below was resolved against the Crossref (or DataCite) API on 2026-11-23 and the
+% title/authors/venue checked against the returned record. Entries without a DOI (NeurIPS,
+% JMLR) were checked against the publisher page. Entries copied from references.bib are marked
+% "(from references.bib)". Anything not verified carries note = {TODO verify}.
+
+% ---------------------------------------------------------------- battery data sources
+@article{huang2020database,
+  author  = {Huang, Shu and Cole, Jacqueline M.},
+  title   = {A database of battery materials auto-generated using {ChemDataExtractor}},
+  journal = {Scientific Data},
+  volume  = {7},
+  pages   = {260},
+  year    = {2020},
+  doi     = {10.1038/s41597-020-00602-2},
+}
+
+@misc{huang2020figshare,
+  author       = {Huang, Shu and Cole, Jacqueline M.},
+  title        = {A database of battery materials auto-generated using {ChemDataExtractor}},
+  howpublished = {figshare dataset (file \texttt{Battery Data.zip})},
+  year         = {2020},
+  doi          = {10.6084/m9.figshare.11888115},
+}
+
+@article{huang2022batterybert,
+  author  = {Huang, Shu and Cole, Jacqueline M.},
+  title   = {{BatteryBERT}: A Pretrained Language Model for Battery Database Enhancement},
+  journal = {Journal of Chemical Information and Modeling},
+  volume  = {62},
+  number  = {24},
+  pages   = {6365--6377},
+  year    = {2022},
+  doi     = {10.1021/acs.jcim.2c00035},
+}
+
+@article{swain2016chemdataextractor,
+  author  = {Swain, Matthew C. and Cole, Jacqueline M.},
+  title   = {{ChemDataExtractor}: A Toolkit for Automated Extraction of Chemical Information from the Scientific Literature},
+  journal = {Journal of Chemical Information and Modeling},
+  volume  = {56},
+  number  = {10},
+  pages   = {1894--1904},
+  year    = {2016},
+  doi     = {10.1021/acs.jcim.6b00207},
+}
+
+@article{mavracic2021chemdataextractor2,
+  author  = {Mavra{\v{c}}i{\'c}, Juraj and Court, Callum J. and Isazawa, Taketomo and Elliott, Stephen R. and Cole, Jacqueline M.},
+  title   = {{ChemDataExtractor} 2.0: Autopopulated Ontologies for Materials Science},
+  journal = {Journal of Chemical Information and Modeling},
+  volume  = {61},
+  number  = {9},
+  pages   = {4280--4289},
+  year    = {2021},
+  doi     = {10.1021/acs.jcim.1c00446},
+}
+
+@article{xu2024atomworkbattery,
+  author  = {Xu, Yibin and Wu, Yen-Ju and Li, Huiping and Fang, Lei and Hayashi, Shigenobu and Oishi, Ayako and Shimizu, Natsuko and Caputo, Riccarda and Villars, Pierre},
+  title   = {A comprehensive data network for data-driven study of battery materials},
+  journal = {Science and Technology of Advanced Materials},
+  volume  = {25},
+  number  = {1},
+  pages   = {2403328},
+  year    = {2024},
+  doi     = {10.1080/14686996.2024.2403328},
+}
+
+@article{ghadbeigi2015performance,
+  author  = {Ghadbeigi, Leila and Harada, Jaye K. and Lettiere, Bethany R. and Sparks, Taylor D.},
+  title   = {Performance and resource considerations of {Li}-ion battery electrode materials},
+  journal = {Energy \& Environmental Science},
+  volume  = {8},
+  number  = {6},
+  pages   = {1640--1650},
+  year    = {2015},
+  doi     = {10.1039/C5EE00685F},
+}
+
+% ---------------------------------------------------------------- battery ML
+@article{kauwe2019battery,
+  author  = {Kauwe, Steven K. and Rhone, Trevor David and Sparks, Taylor D.},
+  title   = {Data-Driven Studies of {Li}-Ion-Battery Materials},
+  journal = {Crystals},
+  volume  = {9},
+  number  = {1},
+  pages   = {54},
+  year    = {2019},
+  doi     = {10.3390/cryst9010054},
+}
+
+@article{severson2019cyclelife,
+  author  = {Severson, Kristen A. and Attia, Peter M. and Jin, Norman and Perkins, Nicholas and Jiang, Benben and Yang, Zi and Chen, Michael H. and Aykol, Muratahan and Herring, Patrick K. and Fraggedakis, Dimitrios and Bazant, Martin Z. and Harris, Stephen J. and Chueh, William C. and Braatz, Richard D.},
+  title   = {Data-driven prediction of battery cycle life before capacity degradation},
+  journal = {Nature Energy},
+  volume  = {4},
+  number  = {5},
+  pages   = {383--391},
+  year    = {2019},
+  doi     = {10.1038/s41560-019-0356-8},
+}
+
+@article{celik2022cyclelife,
+  author  = {Celik, Belen and Sandt, Roland and dos Santos, Lara Caroline Pereira and Spatschek, Robert},
+  title   = {Prediction of Battery Cycle Life Using Early-Cycle Data, Machine Learning and Data Management},
+  journal = {Batteries},
+  volume  = {8},
+  number  = {12},
+  pages   = {266},
+  year    = {2022},
+  doi     = {10.3390/batteries8120266},
+}
+
+% ---------------------------------------------------------------- evaluation under distribution shift
+@article{meredig2018cluster,
+  author  = {Meredig, Bryce and Antono, Erin and Church, Carena and Hutchinson, Maxwell and Ling, Julia and Paradiso, Sean and Blaiszik, Ben and Foster, Ian and Gibbons, Brenna and Hattrick-Simpers, Jason and Mehta, Apurva and Ward, Logan},
+  title   = {Can machine learning identify the next high-temperature superconductor? Examining extrapolation performance for materials discovery},
+  journal = {Molecular Systems Design \& Engineering},
+  year    = {2018},
+  volume  = {3},
+  number  = {5},
+  pages   = {819--825},
+  doi     = {10.1039/C8ME00012C},
+}
+
+@article{durdy2022locoCV,
+  author  = {Durdy, Samantha and Gaultois, Michael W. and Gusev, Vladimir V. and Bollegala, Danushka and Rosseinsky, Matthew J.},
+  title   = {Random projections and kernelised leave one cluster out cross validation: universal baselines and evaluation tools for supervised machine learning of material properties},
+  journal = {Digital Discovery},
+  volume  = {1},
+  number  = {6},
+  pages   = {763--778},
+  year    = {2022},
+  doi     = {10.1039/D2DD00039C},
+}
+
+@article{witman2025matfold,
+  author  = {Witman, Matthew D. and Schindler, Peter},
+  title   = {{MatFold}: systematic insights into materials discovery models' performance through standardized cross-validation protocols},
+  journal = {Digital Discovery},
+  volume  = {4},
+  number  = {3},
+  pages   = {625--635},
+  year    = {2025},
+  doi     = {10.1039/D4DD00250D},
+}
+
+% (from references.bib)
+@article{stanev2018superconductor,
+  author  = {Stanev, Valentin and Oses, Corey and Kusne, A. Gilad and Rodriguez, Efrain and Paglione, Johnpierre and Curtarolo, Stefano and Takeuchi, Ichiro},
+  title   = {Machine learning modeling of superconducting critical temperature},
+  journal = {npj Computational Materials},
+  volume  = {4},
+  pages   = {29},
+  year    = {2018},
+  doi     = {10.1038/s41524-018-0085-8},
+}
+
+% (from references.bib)
+@article{kauwe2020extraordinary,
+  author  = {Kauwe, Steven K. and Graser, Jake and Murdock, Ryan and Sparks, Taylor D.},
+  title   = {Can machine learning find extraordinary materials?},
+  journal = {Computational Materials Science},
+  volume  = {174},
+  pages   = {109498},
+  year    = {2020},
+  doi     = {10.1016/j.commatsci.2019.109498},
+}
+
+% (from references.bib)
+@article{xiong2020forward,
+  author  = {Xiong, Zheng and Cui, Yuxin and Liu, Zhonghao and Zhao, Yong and Hu, Ming and Hu, Jianjun},
+  title   = {Evaluating explorative prediction power of machine learning algorithms for materials discovery using k-fold forward cross-validation},
+  journal = {Computational Materials Science},
+  volume  = {171},
+  pages   = {109203},
+  year    = {2020},
+  doi     = {10.1016/j.commatsci.2019.109203},
+}
+
+% (from references.bib)
+@article{sheridan2013timesplit,
+  author  = {Sheridan, Robert P.},
+  title   = {Time-split cross-validation as a method for estimating the goodness of prospective prediction},
+  journal = {Journal of Chemical Information and Modeling},
+  volume  = {53},
+  number  = {4},
+  pages   = {783--790},
+  year    = {2013},
+  doi     = {10.1021/ci400084k},
+}
+
+% (from references.bib)
+@article{roberts2017crossvalidation,
+  author  = {Roberts, David R. and Bahn, Volker and Ciuti, Simone and Boyce, Mark S. and Elith, Jane and Guillera-Arroita, Gurutzeta and Hauenstein, Severin and Lahoz-Monfort, Jos{\'e} J. and Schr{\"o}der, Boris and Thuiller, Wilfried and Warton, David I. and Wintle, Brendan A. and Hartig, Florian and Dormann, Carsten F.},
+  title   = {Cross-validation strategies for data with temporal, spatial, hierarchical, or phylogenetic structure},
+  journal = {Ecography},
+  volume  = {40},
+  number  = {8},
+  pages   = {913--929},
+  year    = {2017},
+  doi     = {10.1111/ecog.02881},
+}
+
+% (from references.bib)
+@article{kapoor2023leakage,
+  author  = {Kapoor, Sayash and Narayanan, Arvind},
+  title   = {Leakage and the reproducibility crisis in machine-learning-based science},
+  journal = {Patterns},
+  year    = {2023},
+  volume  = {4},
+  number  = {9},
+  pages   = {100804},
+  doi     = {10.1016/j.patter.2023.100804},
+}
+
+% (from references.bib) literature-derived database precedent: random split vs. newer records
+@article{fukasawa2024effectiveness,
+  author  = {Fukasawa, Ryo and Asahi, Toru and Taniguchi, Takuya},
+  title   = {Effectiveness and limitation of the performance prediction of perovskite solar cells by process informatics},
+  journal = {Energy Advances},
+  volume  = {3},
+  number  = {4},
+  pages   = {812--820},
+  year    = {2024},
+  doi     = {10.1039/D3YA00617D},
+}
+
+% (from references.bib) LLM-based literature extraction
+@article{dagdelen2024structured,
+  author  = {Dagdelen, John and Dunn, Alexander and Lee, Sanghoon and Walker, Nicholas and Rosen, Andrew S. and Ceder, Gerbrand and Persson, Kristin A. and Jain, Anubhav},
+  title   = {Structured information extraction from scientific text with large language models},
+  journal = {Nature Communications},
+  year    = {2024},
+  volume  = {15},
+  pages   = {1418},
+  doi     = {10.1038/s41467-024-45563-x},
+}
+
+% ---------------------------------------------------------------- features
+@article{ward2016magpie,
+  author  = {Ward, Logan and Agrawal, Ankit and Choudhary, Alok and Wolverton, Christopher},
+  title   = {A general-purpose machine learning framework for predicting properties of inorganic materials},
+  journal = {npj Computational Materials},
+  volume  = {2},
+  pages   = {16028},
+  year    = {2016},
+  doi     = {10.1038/npjcompumats.2016.28},
+}
+
+@article{ong2013pymatgen,
+  author  = {Ong, Shyue Ping and Richards, William Davidson and Jain, Anubhav and Hautier, Geoffroy and Kocher, Michael and Cholia, Shreyas and Gunter, Dan and Chevrier, Vincent L. and Persson, Kristin A. and Ceder, Gerbrand},
+  title   = {Python Materials Genomics (pymatgen): A robust, open-source python library for materials analysis},
+  journal = {Computational Materials Science},
+  volume  = {68},
+  pages   = {314--319},
+  year    = {2013},
+  doi     = {10.1016/j.commatsci.2012.10.028},
+}
+
+% ---------------------------------------------------------------- methods / software
+% (from references.bib)
+@inproceedings{prokhorenkova2018catboost,
+  author    = {Prokhorenkova, Liudmila and Gusev, Gleb and Vorobev, Aleksandr and Dorogush, Anna Veronika and Gulin, Andrey},
+  title     = {{CatBoost}: unbiased boosting with categorical features},
+  booktitle = {Advances in Neural Information Processing Systems},
+  volume    = {31},
+  year      = {2018},
+}
+
+% (from references.bib)
+@inproceedings{chen2016xgboost,
+  author    = {Chen, Tianqi and Guestrin, Carlos},
+  title     = {{XGBoost}: A Scalable Tree Boosting System},
+  booktitle = {Proceedings of the 22nd ACM SIGKDD International Conference on Knowledge Discovery and Data Mining},
+  pages     = {785--794},
+  year      = {2016},
+  doi       = {10.1145/2939672.2939785},
+}
+
+% (from references.bib)
+@inproceedings{shappaper,
+  author    = {Lundberg, Scott M. and Lee, Su-In},
+  title     = {A Unified Approach to Interpreting Model Predictions},
+  booktitle = {Advances in Neural Information Processing Systems},
+  volume    = {30},
+  year      = {2017},
+}
+
+@article{lundberg2020treeshap,
+  author  = {Lundberg, Scott M. and Erion, Gabriel and Chen, Hugh and DeGrave, Alex and Prutkin, Jordan M. and Nair, Bala and Katz, Ronit and Himmelfarb, Jonathan and Bansal, Nisha and Lee, Su-In},
+  title   = {From local explanations to global understanding with explainable {AI} for trees},
+  journal = {Nature Machine Intelligence},
+  volume  = {2},
+  number  = {1},
+  pages   = {56--67},
+  year    = {2020},
+  doi     = {10.1038/s42256-019-0138-9},
+}
+
+@article{pedregosa2011sklearn,
+  author  = {Pedregosa, Fabian and Varoquaux, Ga{\"e}l and Gramfort, Alexandre and Michel, Vincent and Thirion, Bertrand and Grisel, Olivier and Blondel, Mathieu and Prettenhofer, Peter and Weiss, Ron and Dubourg, Vincent and Vanderplas, Jake and Passos, Alexandre and Cournapeau, David and Brucher, Matthieu and Perrot, Matthieu and Duchesnay, {\'E}douard},
+  title   = {Scikit-learn: Machine Learning in {P}ython},
+  journal = {Journal of Machine Learning Research},
+  volume  = {12},
+  pages   = {2825--2830},
+  year    = {2011},
+  url     = {https://jmlr.org/papers/v12/pedregosa11a.html},
+}
+
+@article{tran2020uq,
+  author  = {Tran, Kevin and Neiswanger, Willie and Yoon, Junwoong and Zhang, Qingyang and Xing, Eric and Ulissi, Zachary W.},
+  title   = {Methods for comparing uncertainty quantifications for material property predictions},
+  journal = {Machine Learning: Science and Technology},
+  volume  = {1},
+  number  = {2},
+  pages   = {025006},
+  year    = {2020},
+  doi     = {10.1088/2632-2153/ab7e1a},
+}
+
+% ---- Studies on the same database (verified via Crossref / arXiv API, 2026-11-23) ----
+@article{jablonka2026clever,
+  author  = {Jablonka, Kevin Maik},
+  title   = {Clever Materials: When Models Identify Good Materials for the Wrong Reasons},
+  journal = {arXiv preprint arXiv:2602.17730},
+  year    = {2026},
+  doi     = {10.48550/arXiv.2602.17730},
+  note    = {Code: \url{https://github.com/lamalab-org/clever-materials-hans}}
+}
+@article{zhuang2023mendeleev,
+  author  = {Zhuang, Zixin and Barnard, Amanda S.},
+  title   = {Structure-Free {M}endeleev Encodings of Material Compounds for Machine Learning},
+  journal = {Chemistry of Materials},
+  volume  = {35},
+  number  = {21},
+  pages   = {9325--9338},
+  year    = {2023},
+  doi     = {10.1021/acs.chemmater.3c02134}
+}
+@article{zhuang2024classification,
+  author  = {Zhuang, Zixin and Barnard, Amanda S.},
+  title   = {Classification of battery compounds using structure-free {M}endeleev encodings},
+  journal = {Journal of Cheminformatics},
+  volume  = {16},
+  number  = {1},
+  pages   = {47},
+  year    = {2024},
+  doi     = {10.1186/s13321-024-00836-x}
+}
+@article{zhuang2024property,
+  author  = {Zhuang, Zixin and Barnard, Amanda S.},
+  title   = {Property Prediction for Complex Compounds Using Structure-Free {M}endeleev Encoding and Machine Learning},
+  journal = {Journal of Chemical Information and Modeling},
+  volume  = {64},
+  number  = {24},
+  pages   = {9205--9214},
+  year    = {2024},
+  doi     = {10.1021/acs.jcim.4c01343}
+}
+@article{zhuang2025applications,
+  author  = {Zhuang, Zixin and Barnard, Amanda S.},
+  title   = {Predicting battery applications for complex materials based on chemical composition and machine learning},
+  journal = {Computational Materials Science},
+  volume  = {246},
+  pages   = {113344},
+  year    = {2025},
+  doi     = {10.1016/j.commatsci.2024.113344}
+}
+@article{ward2018matminer,
+  author  = {Ward, Logan and Dunn, Alexander and Faghaninia, Alireza and Zimmermann, Nils E. R. and others},
+  title   = {Matminer: An open source toolkit for materials data mining},
+  journal = {Computational Materials Science},
+  volume  = {152},
+  pages   = {60--69},
+  year    = {2018},
+  doi     = {10.1016/j.commatsci.2018.05.018}
+}
+@article{meredig2014combinatorial,
+  author  = {Meredig, B. and Agrawal, A. and Kirklin, S. and Saal, J. E. and Doak, J. W. and Thompson, A. and Zhang, K. and Choudhary, A. and Wolverton, C.},
+  title   = {Combinatorial screening for new materials in unconstrained composition space with machine learning},
+  journal = {Physical Review B},
+  volume  = {89},
+  number  = {9},
+  pages   = {094104},
+  year    = {2014},
+  doi     = {10.1103/PhysRevB.89.094104}
+}
+@inproceedings{ke2017lightgbm,
+  author    = {Ke, Guolin and Meng, Qi and Finley, Thomas and Wang, Taifeng and Chen, Wei and Ma, Weidong and Ye, Qiwei and Liu, Tie-Yan},
+  title     = {{LightGBM}: A Highly Efficient Gradient Boosting Decision Tree},
+  booktitle = {Advances in Neural Information Processing Systems},
+  volume    = {30},
+  year      = {2017}
+}

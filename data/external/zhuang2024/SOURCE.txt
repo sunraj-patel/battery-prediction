@@ -1,0 +1,2 @@
+Source: https://github.com/ZoraZhuang/battery_datasets (GPL-3.0), files experimental/periodic_table.csv and experimental/batteries_ultra_cleaned.csv, downloaded 2026-11-23.
+Zhuang & Barnard, J. Chem. Inf. Model. 2024, 64, 9205-9214, doi:10.1021/acs.jcim.4c01343

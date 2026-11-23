@@ -1,0 +1,12 @@
+capacity random t3 --no-save-models
+voltage random t2 --drop-series --no-save-models
+capacity doi t1 --no-save-models
+voltage doi t3 --no-save-models
+voltage doi comp --no-save-models
+coulombic_efficiency doi t2_id --no-save-models
+coulombic_efficiency kfold t2 --no-save-models
+coulombic_efficiency doi t1 --no-save-models
+energy kfold t2 --no-save-models
+energy doi t1 --no-save-models
+conductivity doi t3 --no-save-models
+conductivity doi comp --no-save-models

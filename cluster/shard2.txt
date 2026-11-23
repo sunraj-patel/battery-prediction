@@ -1,0 +1,15 @@
+capacity random t2_id --no-save-models
+capacity doi t2_id --no-save-models
+capacity kfold t2 --no-save-models
+capacity doi t2_noise --shap --no-save-models
+voltage material t2 --no-save-models
+voltage doi t2 --drop-series --no-save-models
+coulombic_efficiency random t2_id --no-save-models
+energy random t3 --no-save-models
+energy random t2 --drop-series --no-save-models
+energy doi t2_id --no-save-models
+coulombic_efficiency doi t2_noise --shap --no-save-models
+conductivity doi t2_id --no-save-models
+energy doi t3 --no-save-models
+energy doi comp --no-save-models
+conductivity doi t2 --drop-series --no-save-models

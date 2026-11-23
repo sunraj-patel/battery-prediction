@@ -1,0 +1,6 @@
+target,property,unit,raw_records,raw_publications,removed_missing_value,removed_calculated,removed_bounds,removed_duplicates,records,publications,no_doi,dated,type_known,warning_S,records_per_pub_median,comp_parsed
+capacity,Capacity,mAh/g,144359,22836,0,0,37,0,144322,22833,0,144322,5586,81605,4.0,144322
+voltage,Voltage,V,114240,32754,0,0,64,0,114176,32747,0,114176,2670,31922,2.0,114168
+conductivity,Conductivity,S/cm,7168,3482,0,0,211,0,6957,3351,0,6957,35,762,1.0,6957
+coulombic_efficiency,Coulombic Efficiency,%,11003,5861,0,0,0,0,11003,5861,0,11003,475,1469,1.0,11003
+energy,Energy,Wh/kg,15543,3129,0,6718,40,0,8785,3113,0,8785,232,1607,2.0,8785

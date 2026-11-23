@@ -1,0 +1,2 @@
+target,protocol,tier,n_splits,delta_r2,delta_sd,ci_lo,ci_hi
+voltage,random,t3,1,0.045197495934255705,,0.03947001266012285,0.05145425849501314

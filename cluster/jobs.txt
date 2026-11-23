@@ -1,0 +1,25 @@
+# target protocol tier extra   (one line = one SLURM array task; main runs first)
+capacity doi t2 --shap
+capacity random t2 --shap
+capacity temporal t2 --shap
+voltage doi t2 --shap
+voltage random t2 --shap
+voltage temporal t2 --shap
+conductivity doi t2 --shap
+conductivity random t2 --shap
+conductivity temporal t2 --shap
+coulombic_efficiency doi t2 --shap
+coulombic_efficiency random t2 --shap
+coulombic_efficiency temporal t2 --shap
+energy doi t2 --shap
+energy random t2 --shap
+energy temporal t2 --shap
+all doi t3 --shap
+all random t3 --no-save-models
+all doi t2_id --shap
+all random t2_id --no-save-models
+all doi t2_noise --shap
+all doi comp --no-save-models
+all doi t1 --no-save-models
+all doi t2 --drop-series --no-save-models
+all random t2 --drop-series --no-save-models

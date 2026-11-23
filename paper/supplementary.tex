@@ -1,0 +1,190 @@
+\documentclass[11pt]{article}
+\usepackage[margin=2.2cm]{geometry}
+
+\usepackage[numbers,sort&compress]{natbib}
+
+% Standard package includes for math, tables, and images
+\usepackage{float}
+\usepackage{enumitem}
+\usepackage{subcaption}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{url}
+\usepackage{stfloats}
+\usepackage{tabularx}
+\usepackage{setspace}
+\usepackage{xcolor}
+
+% Font and layout improvements
+\usepackage[T1]{fontenc}
+\usepackage{lmodern} % scalable T1 fonts (needed for microtype on TeX installs without cm-super)
+\usepackage[utf8]{inputenc}
+\usepackage{microtype}
+\usepackage{inconsolata}
+\usepackage{hyperref}
+
+% ---------------------------------------------------------------------------
+% Placeholders for results that do not exist yet. Every number produced by the
+% pipeline (scripts/01-04, results/*.csv) is written as \TBD{key} in running
+% text or \TBDcell{key} in tables. Keys are listed, with the file/column that
+% fills them, in paper/RESULTS_TODO.md. Do NOT replace a key with a number by
+% hand: copy it from the named output file.
+% Set \showTBDkeystrue to print the keys in table cells as well.
+% ---------------------------------------------------------------------------
+\newif\ifshowTBDkeys
+\showTBDkeysfalse
+\newcommand{\TBD}[1]{\textcolor{red}{[\textbf{TBD}: \nolinkurl{#1}]}}
+\newcommand{\TBDtext}[2]{\textcolor{red}{[\textbf{TBD} \nolinkurl{#1}: \emph{#2}]}}
+\newcommand{\TBDcell}[1]{\ifshowTBDkeys\textcolor{red}{\scriptsize\texttt{\detokenize{#1}}}\else\textcolor{red}{TBD}\fi}
+\newcommand{\FIGTBD}[2]{\fbox{\parbox[c][4.5cm][c]{0.9\linewidth}{\centering\textcolor{red}{\textbf{Figure placeholder}}\\[2pt]\texttt{\detokenize{#1}}\\[2pt]\small #2}}}
+
+
+\emergencystretch=3em
+\renewcommand{\thetable}{S\arabic{table}}
+\renewcommand{\thefigure}{S\arabic{figure}}
+\begin{document}
+\begin{center}
+{\Large\bfseries Supplementary Information}\\[4pt]
+{\large Publication-aware prediction of battery material properties from literature-extracted data}\\[4pt]
+Sunraj Patel, Shikhar Misra
+\end{center}
+
+All values are produced by \texttt{scripts/05\_analysis.py} and \texttt{scripts/07\_previous\_pipelines.py} from the run outputs listed in the Data availability statement.
+
+\begin{table}[htbp]
+    \centering\small
+    \caption{\textbf{Bibliographic-fingerprint test} (adapted from Jablonka \cite{jablonka2026clever}; matminer descriptors, LightGBM, split~1). Year MAE: publication year predicted from the descriptors, and the training-mean baseline. Journal F1: micro-F1 for the ten most frequent journals. Indirect $R^2$: target predicted from the predicted journal and year only.}
+    \label{tab:clever}
+    \begin{tabular}{@{}llcccc@{}}
+        \toprule
+        Target & Split & Year MAE & Baseline & Journal F1 & Indirect $R^2$ \\
+        \midrule
+        Capacity & random & 2.4 & 2.8 & 0.14 & 0.002 \\
+        Capacity & doi & 2.5 & 2.8 & 0.02 & -0.001 \\
+        Voltage & random & 3.3 & 3.9 & 0.10 & 0.009 \\
+        Voltage & doi & 3.4 & 3.9 & 0.02 & 0.004 \\
+        Conductivity & random & 3.7 & 4.5 & 0.20 & 0.001 \\
+        Conductivity & doi & 4.2 & 4.6 & 0.04 & 0.007 \\
+        Coulombic eff. & random & 2.0 & 2.3 & 0.21 & 0.002 \\
+        Coulombic eff. & doi & 2.3 & 2.4 & 0.03 & -0.009 \\
+        Energy & random & 2.1 & 2.5 & 0.30 & 0.005 \\
+        Energy & doi & 2.4 & 2.5 & 0.08 & 0.011 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+\begin{table*}[t]
+    \centering\small
+    \caption{\textbf{Columns excluded from the predictors (``FORBIDDEN'' list).}}
+    \label{tab:forbidden}
+    \begin{tabular}{@{}l p{11.5cm}@{}}
+        \toprule
+        Column & Reason \\
+        \midrule
+        \texttt{DOI}, \texttt{doi\_group} & publication identity; used only to define split groups \\
+        \texttt{Value}, \texttt{Raw\_value} & the target and its text \\
+        \texttt{Raw\_unit}, \texttt{Unit} & derived from the target (unit as written next to the value) \\
+        \texttt{Property} & selects the target (one model per property) \\
+        \texttt{Title} & publication identity; admitted only as keyword flags in $t_3$ \\
+        \texttt{Journal} & publication identity and reporting venue \\
+        \texttt{Date} & publication identity and time; used only to order publications in the temporal split \\
+        \texttt{Correctness} & post-hoc manual evaluation label \\
+        \texttt{Num\_records} & merged-file count (not in \texttt{battery.csv}; listed for completeness) \\
+        \texttt{Warning} = S & series membership; a function of within-paper multiplicity (identity proxy) \\
+        \texttt{Warning} = L & deterministic function of the target value (near-limit ranges) \\
+        \texttt{Tag} & Calculated records are derived and filtered out; constant otherwise \\
+        \texttt{Extracted\_name} (raw) & admitted only through parsed composition and elemental-property features \\
+        \texttt{Name} (raw) & admitted only as name flags (\texttt{txt\_}) and, in $t_{2,\mathrm{id}}$, as \texttt{id\_name} \\
+        \texttt{Specifier} (raw) & admitted only as keyword flags \\
+        \texttt{Info} (raw) & admitted only as parsed current density, C-rate and cycle number \\
+        \bottomrule
+    \end{tabular}
+\end{table*}
+
+\begin{table}[htbp]
+    \centering\small
+    \caption{\textbf{Model configuration}, identical for all targets. Early stopping always uses a validation set drawn with the same split unit as the test set.}
+    \label{tab:config}
+    \begin{tabular}{@{}lcc@{}}
+        \toprule
+        & CatBoost & XGBoost \\
+        \midrule
+        Loss                               & RMSE & squared error \\
+        Learning rate                      & 0.05 & 0.05 \\
+        Tree depth / L2                    & six-point grid (6/3, 8/3, 10/3, 8/10, 10/10, 8/1) & 8 / 3.0 \\
+        Maximum iterations (trees)         & 3,000 & 1,500 \\
+        Early-stopping patience (rounds)   & 150 & 100 \\
+        Row subsample                      & 0.8 & 0.8 \\
+        Feature subsample                  & 0.7 per level & 0.7 \\
+        Seeds                              & 42, 7, 123 (averaged) & 42 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+    \centering\small
+    \caption{\textbf{Split protocols.} Mean partition sizes over splits; values for each target are in the supplementary output.}
+    \label{tab:protocol}
+    \begin{tabular}{@{}llll@{}}
+        \toprule
+        Protocol & Unit & Splits & Test / val.\ fraction \\
+        \midrule
+        Record-level random & record & 5 repeated & 0.20 / 0.15 \\
+        DOI-grouped & publication & 5 repeated (+ 5-fold check) & 0.20 / 0.15 \\
+        Temporal & publication, ordered by date & 3 forward windows & 0.15 each / 0.15 \\
+        Composition-grouped & parsed composition & 5 repeated & 0.20 / 0.15 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\begin{table*}[t]
+    \centering\small
+    \caption{\textbf{Paper-level and identity controls under both split units.} Paired $\Delta R^2$ relative to $t_2$ on the same splits (mean over splits) with the publication-cluster bootstrap 95\% interval for the DOI-grouped protocol.}
+    \label{tab:controls}
+    \begin{tabular}{@{}llcc@{}}
+        \toprule
+        Target & Comparison & $\Delta R^2$ random & $\Delta R^2$ DOI-grouped [95\% interval] \\
+        \midrule
+        Capacity & $t_3 - t_2$ & \TBDcell{d/capacity/random/t3-t2/r2} & \TBDcell{d/capacity/doi/t3-t2/r2} \TBDcell{ci/capacity/doi/t3-t2/r2} \\
+                 & $t_{2,\mathrm{id}} - t_2$ & \TBDcell{d/capacity/random/t2_id-t2/r2} & \TBDcell{d/capacity/doi/t2_id-t2/r2} \TBDcell{ci/capacity/doi/t2_id-t2/r2} \\
+                 & $t_{2,\mathrm{noise}} - t_2$ & \TBDcell{d/capacity/random/t2_noise-t2/r2} & \TBDcell{d/capacity/doi/t2_noise-t2/r2} \TBDcell{ci/capacity/doi/t2_noise-t2/r2} \\
+        \midrule
+        Voltage  & $t_3 - t_2$ & +0.045 & \TBDcell{d/voltage/doi/t3-t2/r2} \TBDcell{ci/voltage/doi/t3-t2/r2} \\
+                 & $t_{2,\mathrm{id}} - t_2$ & \TBDcell{d/voltage/random/t2_id-t2/r2} & \TBDcell{d/voltage/doi/t2_id-t2/r2} \TBDcell{ci/voltage/doi/t2_id-t2/r2} \\
+                 & $t_{2,\mathrm{noise}} - t_2$ & \TBDcell{d/voltage/random/t2_noise-t2/r2} & \TBDcell{d/voltage/doi/t2_noise-t2/r2} \TBDcell{ci/voltage/doi/t2_noise-t2/r2} \\
+        \midrule
+        Conductivity & $t_3 - t_2$ & \TBDcell{d/conductivity/random/t3-t2/r2} & \TBDcell{d/conductivity/doi/t3-t2/r2} \TBDcell{ci/conductivity/doi/t3-t2/r2} \\
+                 & $t_{2,\mathrm{id}} - t_2$ & \TBDcell{d/conductivity/random/t2_id-t2/r2} & \TBDcell{d/conductivity/doi/t2_id-t2/r2} \TBDcell{ci/conductivity/doi/t2_id-t2/r2} \\
+                 & $t_{2,\mathrm{noise}} - t_2$ & \TBDcell{d/conductivity/random/t2_noise-t2/r2} & \TBDcell{d/conductivity/doi/t2_noise-t2/r2} \TBDcell{ci/conductivity/doi/t2_noise-t2/r2} \\
+        \midrule
+        Coulombic eff. & $t_3 - t_2$ & \TBDcell{d/coulombic_efficiency/random/t3-t2/r2} & \TBDcell{d/coulombic_efficiency/doi/t3-t2/r2} \TBDcell{ci/coulombic_efficiency/doi/t3-t2/r2} \\
+                 & $t_{2,\mathrm{id}} - t_2$ & \TBDcell{d/coulombic_efficiency/random/t2_id-t2/r2} & \TBDcell{d/coulombic_efficiency/doi/t2_id-t2/r2} \TBDcell{ci/coulombic_efficiency/doi/t2_id-t2/r2} \\
+                 & $t_{2,\mathrm{noise}} - t_2$ & \TBDcell{d/coulombic_efficiency/random/t2_noise-t2/r2} & \TBDcell{d/coulombic_efficiency/doi/t2_noise-t2/r2} \TBDcell{ci/coulombic_efficiency/doi/t2_noise-t2/r2} \\
+        \midrule
+        Energy   & $t_3 - t_2$ & \TBDcell{d/energy/random/t3-t2/r2} & \TBDcell{d/energy/doi/t3-t2/r2} \TBDcell{ci/energy/doi/t3-t2/r2} \\
+                 & $t_{2,\mathrm{id}} - t_2$ & \TBDcell{d/energy/random/t2_id-t2/r2} & \TBDcell{d/energy/doi/t2_id-t2/r2} \TBDcell{ci/energy/doi/t2_id-t2/r2} \\
+                 & $t_{2,\mathrm{noise}} - t_2$ & \TBDcell{d/energy/random/t2_noise-t2/r2} & \TBDcell{d/energy/doi/t2_noise-t2/r2} \TBDcell{ci/energy/doi/t2_noise-t2/r2} \\
+        \bottomrule
+    \end{tabular}
+\end{table*}
+
+\begin{table}[htbp]
+    \centering\small
+    \caption{\textbf{Ensemble-member spread versus absolute error.} $\rho$: Spearman correlation between $s_i$ and $|y_i-\hat y_i|$ (mean over splits). Ratio: mean $s_i$ on DOI-grouped test records divided by mean $s_i$ on record-level test records.}
+    \label{tab:unc}
+    \begin{tabular}{@{}lccc@{}}
+        \toprule
+        Target & $\rho$ (random) & $\rho$ (DOI) & Spread ratio DOI / random \\
+        \midrule
+        Capacity       & 0.35 & 0.39 & 1.03 \\
+        Voltage        & 0.07 & 0.09 & 1.17 \\
+        Conductivity   & 0.12 & 0.16 & 1.13 \\
+        Coulombic eff. & 0.04 & 0.05 & 1.08 \\
+        Energy         & 0.34 & 0.36 & 1.03 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\bibliographystyle{elsarticle-num}
+\bibliography{references_battery}
+\end{document}

@@ -1,0 +1,22 @@
+# raw database (download from figshare, see data/README.md) and third-party data
+data/raw/
+data/cache/
+data/external/**/*.csv
+# large run outputs: per-record predictions, SHAP arrays and fitted models
+results/**/preds/
+results/**/shap/
+results/previous_preds/
+results/figures/
+models/
+# logs, builds, local material not part of this project
+cluster/logs/
+submission/
+refs/
+paper/*.aux
+paper/*.log
+paper/*.out
+paper/*.blg
+paper/*.pdf
+__pycache__/
+*.pyc
+.DS_Store
