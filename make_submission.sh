@@ -4,7 +4,7 @@
 # Requires the run outputs in results/. Usage: bash make_submission.sh
 set -euo pipefail
 cd "$(dirname "$0")"
-python3 -W ignore scripts/05_analysis.py > /dev/null
+[ "${SKIP_ANALYSIS:-0}" = 1 ] || python3 -W ignore scripts/05_analysis.py > /dev/null
 python3 scripts/fig_toc.py > /dev/null
 python3 scripts/06_fill_paper.py
 OUT=submission; BUILD=$(mktemp -d); mkdir -p $OUT

@@ -26,8 +26,6 @@
 
 % ---------------------------------------------------------------------------
 % Placeholders for results that do not exist yet. Every number produced by the
-% pipeline (scripts/01-04, results/*.csv) is written as \TBD{key} in running
-% text or \TBDcell{key} in tables. Keys are listed, with the file/column that
 % fills them, in paper/RESULTS_TODO.md. Do NOT replace a key with a number by
 % hand: copy it from the named output file.
 % Set \showTBDkeystrue to print the keys in table cells as well.
@@ -145,25 +143,25 @@ All values are produced by \texttt{scripts/05\_analysis.py} and \texttt{scripts/
         \toprule
         Target & Comparison & $\Delta R^2$ random & $\Delta R^2$ DOI-grouped [95\% interval] \\
         \midrule
-        Capacity & $t_3 - t_2$ & \TBDcell{d/capacity/random/t3-t2/r2} & \TBDcell{d/capacity/doi/t3-t2/r2} \TBDcell{ci/capacity/doi/t3-t2/r2} \\
-                 & $t_{2,\mathrm{id}} - t_2$ & \TBDcell{d/capacity/random/t2_id-t2/r2} & \TBDcell{d/capacity/doi/t2_id-t2/r2} \TBDcell{ci/capacity/doi/t2_id-t2/r2} \\
-                 & $t_{2,\mathrm{noise}} - t_2$ & \TBDcell{d/capacity/random/t2_noise-t2/r2} & \TBDcell{d/capacity/doi/t2_noise-t2/r2} \TBDcell{ci/capacity/doi/t2_noise-t2/r2} \\
+        Capacity & $t_3 - t_2$ & +0.045 & +0.046 (95\% CI +0.040 to +0.052) \\
+                 & $t_{2,\mathrm{id}} - t_2$ & +0.009 & +0.002 (95\% CI -0.000 to +0.003) \\
+                 & $t_{2,\mathrm{noise}} - t_2$ & --- & -0.002 (95\% CI -0.004 to +0.000) \\
         \midrule
-        Voltage  & $t_3 - t_2$ & +0.045 & \TBDcell{d/voltage/doi/t3-t2/r2} \TBDcell{ci/voltage/doi/t3-t2/r2} \\
-                 & $t_{2,\mathrm{id}} - t_2$ & \TBDcell{d/voltage/random/t2_id-t2/r2} & \TBDcell{d/voltage/doi/t2_id-t2/r2} \TBDcell{ci/voltage/doi/t2_id-t2/r2} \\
-                 & $t_{2,\mathrm{noise}} - t_2$ & \TBDcell{d/voltage/random/t2_noise-t2/r2} & \TBDcell{d/voltage/doi/t2_noise-t2/r2} \TBDcell{ci/voltage/doi/t2_noise-t2/r2} \\
+        Voltage  & $t_3 - t_2$ & +0.046 & +0.043 (95\% CI +0.039 to +0.047) \\
+                 & $t_{2,\mathrm{id}} - t_2$ & +0.008 & +0.000 (95\% CI -0.001 to +0.001) \\
+                 & $t_{2,\mathrm{noise}} - t_2$ & --- & -0.007 (95\% CI -0.008 to -0.006) \\
         \midrule
-        Conductivity & $t_3 - t_2$ & \TBDcell{d/conductivity/random/t3-t2/r2} & \TBDcell{d/conductivity/doi/t3-t2/r2} \TBDcell{ci/conductivity/doi/t3-t2/r2} \\
-                 & $t_{2,\mathrm{id}} - t_2$ & \TBDcell{d/conductivity/random/t2_id-t2/r2} & \TBDcell{d/conductivity/doi/t2_id-t2/r2} \TBDcell{ci/conductivity/doi/t2_id-t2/r2} \\
-                 & $t_{2,\mathrm{noise}} - t_2$ & \TBDcell{d/conductivity/random/t2_noise-t2/r2} & \TBDcell{d/conductivity/doi/t2_noise-t2/r2} \TBDcell{ci/conductivity/doi/t2_noise-t2/r2} \\
+        Conductivity & $t_3 - t_2$ & +0.012 & +0.006 (95\% CI -0.001 to +0.013) \\
+                 & $t_{2,\mathrm{id}} - t_2$ & -0.002 & -0.006 (95\% CI -0.014 to +0.002) \\
+                 & $t_{2,\mathrm{noise}} - t_2$ & --- & -0.016 (95\% CI -0.024 to -0.008) \\
         \midrule
-        Coulombic eff. & $t_3 - t_2$ & \TBDcell{d/coulombic_efficiency/random/t3-t2/r2} & \TBDcell{d/coulombic_efficiency/doi/t3-t2/r2} \TBDcell{ci/coulombic_efficiency/doi/t3-t2/r2} \\
-                 & $t_{2,\mathrm{id}} - t_2$ & \TBDcell{d/coulombic_efficiency/random/t2_id-t2/r2} & \TBDcell{d/coulombic_efficiency/doi/t2_id-t2/r2} \TBDcell{ci/coulombic_efficiency/doi/t2_id-t2/r2} \\
-                 & $t_{2,\mathrm{noise}} - t_2$ & \TBDcell{d/coulombic_efficiency/random/t2_noise-t2/r2} & \TBDcell{d/coulombic_efficiency/doi/t2_noise-t2/r2} \TBDcell{ci/coulombic_efficiency/doi/t2_noise-t2/r2} \\
+        Coulombic eff. & $t_3 - t_2$ & +0.025 & +0.017 (95\% CI +0.010 to +0.024) \\
+                 & $t_{2,\mathrm{id}} - t_2$ & +0.006 & -0.005 (95\% CI -0.008 to -0.002) \\
+                 & $t_{2,\mathrm{noise}} - t_2$ & --- & -0.009 (95\% CI -0.015 to -0.003) \\
         \midrule
-        Energy   & $t_3 - t_2$ & \TBDcell{d/energy/random/t3-t2/r2} & \TBDcell{d/energy/doi/t3-t2/r2} \TBDcell{ci/energy/doi/t3-t2/r2} \\
-                 & $t_{2,\mathrm{id}} - t_2$ & \TBDcell{d/energy/random/t2_id-t2/r2} & \TBDcell{d/energy/doi/t2_id-t2/r2} \TBDcell{ci/energy/doi/t2_id-t2/r2} \\
-                 & $t_{2,\mathrm{noise}} - t_2$ & \TBDcell{d/energy/random/t2_noise-t2/r2} & \TBDcell{d/energy/doi/t2_noise-t2/r2} \TBDcell{ci/energy/doi/t2_noise-t2/r2} \\
+        Energy   & $t_3 - t_2$ & +0.084 & +0.064 (95\% CI +0.047 to +0.081) \\
+                 & $t_{2,\mathrm{id}} - t_2$ & +0.013 & +0.010 (95\% CI +0.003 to +0.018) \\
+                 & $t_{2,\mathrm{noise}} - t_2$ & --- & -0.005 (95\% CI -0.018 to +0.008) \\
         \bottomrule
     \end{tabular}
 \end{table*}
