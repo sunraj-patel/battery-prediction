@@ -20,3 +20,7 @@ paper/*.pdf
 __pycache__/
 *.pyc
 .DS_Store
+
+# local LaTeX editor builds; cover letter (personal contact details) stays out of the repo
+paper/.texbuild/
+paper/cover_letter.tex

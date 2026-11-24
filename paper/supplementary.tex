@@ -43,9 +43,9 @@
 \renewcommand{\thefigure}{S\arabic{figure}}
 \begin{document}
 \begin{center}
-{\Large\bfseries Supplementary Information}\\[4pt]
+{\Large\bfseries Electronic Supplementary Information (ESI)}\\[4pt]
 {\large Publication-aware prediction of battery material properties from literature-extracted data}\\[4pt]
-Sunraj Patel, Shikhar Misra
+Sunraj Patel
 \end{center}
 
 All values are produced by \texttt{scripts/05\_analysis.py} and \texttt{scripts/07\_previous\_pipelines.py} from the run outputs listed in the Data availability statement.
@@ -185,4 +185,38 @@ All values are produced by \texttt{scripts/05\_analysis.py} and \texttt{scripts/
 
 \bibliographystyle{elsarticle-num}
 \bibliography{references_battery}
+\begin{table}[htbp]
+    \centering\small
+    \caption{\textbf{Zhuang--Barnard workflow on their own cleaned records} (re-implementation; random 85/15 split as published, and a DOI-grouped 85/15 split with the same seed). Conductivity is in S~cm$^{-1}$ as in the original study. Published random-split $R^2$ in the first column.}
+    \label{tab:zbB_esi}
+    \begin{tabular}{@{}lccc@{}}
+        \toprule
+        Target & Published $R^2$ & Random $R^2$ (re-run) & DOI-grouped $R^2$ \\
+        \midrule
+        Capacity       & 0.473 & 0.471 & 0.411 \\
+        Voltage        & 0.489 & 0.479 & 0.484 \\
+        Conductivity   & 0.056 & 0.088 & -0.077 \\
+        Coulombic eff. & 0.142 & 0.021 & 0.037 \\
+        Energy         & 0.495 & 0.531 & 0.416 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\begin{table*}[t]
+    \centering\small
+    \caption{\textbf{Diagnostics of repeated (name, value) pairs} (DOI-grouped test records of the $t_2$ ensemble; means over five splits). Exact: same normalised name and value to six significant figures in a training record of another publication; 1\%: value within 1\% of the test value; 2 s.f.: value rounded to two significant figures. $R^2$ is for repeated / other records under the 1\% match. R flag and publication size (median records per publication of the test record's own publication) for repeated / other records. Later / earlier: share of repeated records whose publication year is after / before every matching publication.}
+    \label{tab:rpd}
+    \begin{tabular}{@{}lccccccc@{}}
+        \toprule
+        Target & Exact & 1\% & 2 s.f. & $R^2$ rep. / other & R flag & Pub.\ size & Later / earlier \\
+        \midrule
+        Capacity & 29.1\% & 45.3\% & 48.3\% & 0.68 / 0.30 & 3.9\% / 1.4\% & 8 / 12 & 20.2\% / 22.3\% \\
+        Voltage & 46.0\% & 49.9\% & 52.5\% & 0.59 / 0.30 & 6.3\% / 4.9\% & 4 / 6 & 16.2\% / 17.3\% \\
+        Conductivity & 22.4\% & 23.4\% & 23.9\% & 0.43 / 0.09 & 13.7\% / 16.0\% & 2 / 3 & 23.9\% / 27.4\% \\
+        Coulombic eff. & 15.7\% & 28.8\% & 26.2\% & 0.03 / 0.03 & 5.8\% / 3.9\% & 2 / 2 & 26.5\% / 30.5\% \\
+        Energy & 20.0\% & 25.1\% & 27.3\% & 0.76 / 0.21 & 4.4\% / 5.6\% & 4 / 4 & 26.3\% / 28.7\% \\
+        \bottomrule
+    \end{tabular}
+\end{table*}
+
 \end{document}

@@ -51,9 +51,12 @@ Main tier `t2` = comp + mat + txt + meas.
 ## Analysis, comparison and manuscript
 
 ```
-python scripts/05_analysis.py          # every manuscript number -> results/paper_values.json, CSV tables, paper/figures/
+python scripts/05_analysis.py          # every manuscript number -> results/paper_values.json, CSV tables
 python scripts/07_previous_pipelines.py # Jablonka (2026) pipeline adapted to our split-1 partitions + bibliographic-fingerprint test
+python scripts/10_figures.py           # data figures -> paper/figures/fig_*.{pdf,png}
+python scripts/11_schematics.py        # TikZ schematics in paper/figures_src/ -> paper/figures/ (needs tectonic)
 python scripts/06_fill_paper.py        # paper/{ml,supplementary}_template.tex -> paper/{ml,supplementary}.tex
+bash make_submission.sh                # all of the above + every PDF (tectonic) -> submission/
 ```
 
 Edit prose only in the `*_template.tex` files; `ml.tex` and `supplementary.tex` are generated. Remaining red `\TBD`

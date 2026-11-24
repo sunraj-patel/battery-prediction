@@ -2,7 +2,7 @@
 
   python scripts/05_analysis.py            # -> results/{summary_full,paired_deltas,uncertainty,overlap,series,
                                            #    correctness,error_by_warning,shap_groups_all,population_ext}.csv
-                                           #    results/paper_values.json, paper/figures/fig_*.png
+                                           #    results/paper_values.json (figures: scripts/10_figures.py)
 
 Nothing is refitted. Conventions: metrics are the 'ens' model, mean +/- sample s.d. over splits; paired tier
 differences use identical test sets (splits depend only on the DOI groups and the seed); confidence intervals are a
@@ -392,89 +392,8 @@ def feature_counts():
     V["cfg/grid"] = "(" + ", ".join(f"{g['depth']}/{g['l2_leaf_reg']}" for g in tr.GRID) + ")"
 
 
-# ---------------------------------------------------------------- figures
-def figures(S, U, G, F, R):
-    import matplotlib
-    matplotlib.use("Agg")
-    import matplotlib.pyplot as plt
-    FIG.mkdir(parents=True, exist_ok=True)
-    plt.rcParams.update({"font.size": 8, "axes.spines.top": False, "axes.spines.right": False})
-    COL = {"random": "#9DB4CF", "doi": "#2F5D8A", "temporal": "#C97B4A"}
-    LAB = {"random": "Record-level random", "doi": "DOI-grouped", "temporal": "Temporal"}
-    UNIT = {"capacity": "mAh g$^{-1}$", "voltage": "V", "conductivity": "log$_{10}$ S cm$^{-1}$",
-            "coulombic_efficiency": "%", "energy": "Wh kg$^{-1}$"}
-
-    # target distributions
-    fig, ax = plt.subplots(1, 5, figsize=(7.2, 1.8))
-    for a, t in zip(ax, TGT):
-        D = data(t); s = D.Warning.fillna("").str.contains("S")
-        bins = np.histogram_bin_edges(D.y, 40)
-        a.hist(D.y[~s], bins, color="#2F5D8A", alpha=.8, label="not S")
-        a.hist(D.y[s], bins, color="#C97B4A", alpha=.6, label="S (series)")
-        a.set_title(NICE[t]); a.set_xlabel(UNIT[t]); a.set_yticks([])
-    ax[0].legend(frameon=False, fontsize=6)
-    fig.tight_layout(); fig.savefig(FIG / "fig_target_distributions.png", dpi=300); plt.close(fig)
-
-    # split protocol by target
-    E = S[(S.tier == "t2") & (S.variant == "all") & (S.model == "ens")]
-    fig, ax = plt.subplots(figsize=(5.2, 2.6))
-    for i, t in enumerate(TGT):
-        for j, p in enumerate(("random", "doi", "temporal")):
-            r = E[(E.target == t) & (E.protocol == p)]
-            if r.empty:
-                continue
-            r = r.iloc[0]; x = i + (j - 1) * .27
-            ax.bar(x, r.r2, .25, yerr=r.r2_sd, color=COL[p], capsize=1.5, label=LAB[p] if i == 0 else None)
-            ax.text(x, max(r.r2, 0) + (0 if np.isnan(r.r2_sd) else r.r2_sd) + .01, f"{r.r2:.2f}", ha="center",
-                    fontsize=5.5)
-    ax.set_xticks(range(5)); ax.set_xticklabels([NICE[t] for t in TGT]); ax.set_ylabel("$R^2$ (t$_2$ ensemble)")
-    ax.axhline(0, color="k", lw=.5); ax.legend(frameon=False, fontsize=6.5)
-    fig.tight_layout(); fig.savefig(FIG / "fig_split_by_target.png", dpi=300); plt.close(fig)
-
-    # SHAP groups + capacity top 15
-    GC = {"composition": "#6BAF7C", "material": "#4A78A8", "material_text": "#9B8AC4", "measurement": "#C97B4A"}
-    GN = {"composition": "Composition", "material": "Elemental properties", "material_text": "Name flags",
-          "measurement": "Measurement context"}
-    fig, ax = plt.subplots(1, 2, figsize=(7.2, 2.8), gridspec_kw=dict(width_ratios=[1, 1.2]))
-    g2 = G[G.tier == "t2"]
-    bottom = np.zeros(5)
-    for k in GC:
-        v = np.array([g2[(g2.target == t) & (g2.group == k)].share.sum() * 100 for t in TGT])
-        ax[0].bar(range(5), v, .6, bottom=bottom, color=GC[k], label=GN[k]); bottom += v
-    ax[0].set_xticks(range(5)); ax[0].set_xticklabels([NICE[t] for t in TGT], rotation=30, ha="right")
-    ax[0].set_ylabel("Share of mean |SHAP| (%)"); ax[0].legend(frameon=False, fontsize=6, loc="lower left")
-    ax[0].set_title("(a) DOI-grouped, t$_2$")
-    top = F[F.target == "capacity"].head(15).iloc[::-1]
-    ax[1].barh(range(len(top)), top.mean_abs_shap, color=[GC.get(g, "#999") for g in top.group])
-    ax[1].set_yticks(range(len(top))); ax[1].set_yticklabels(top.feature, fontsize=5.5)
-    ax[1].set_xlabel("Mean |SHAP| (mAh g$^{-1}$)"); ax[1].set_title("(b) Capacity, top 15")
-    fig.tight_layout(); fig.savefig(FIG / "fig_shap_groups_by_target.png", dpi=300); plt.close(fig)
-
-    # uncertainty
-    fig, ax = plt.subplots(1, 2, figsize=(7.2, 2.6))
-    d = R[(R.target == "capacity") & (R.protocol == "doi") & (R.tier == "t2") & (R.variant == "all")]
-    Us, Es = [], []
-    for _, r in d.iterrows():
-        P = preds(r.dir, r.split); Us.append(P["unc"]); Es.append(np.abs(P["y"] - P["ens"]))
-    hb = ax[0].hexbin(np.concatenate(Us), np.concatenate(Es), gridsize=45, bins="log", cmap="Blues", mincnt=1)
-    ax[0].set_xlabel("Member spread (mAh g$^{-1}$)"); ax[0].set_ylabel("|error| (mAh g$^{-1}$)")
-    ax[0].set_title("(a) Capacity, DOI-grouped"); fig.colorbar(hb, ax=ax[0], label="records (log)")
-    for t, c in zip(TGT, ["#2F5D8A", "#C97B4A", "#6BAF7C", "#9B8AC4", "#B5505A"]):
-        for p, ls in (("doi", "-"), ("random", ":")):
-            d = R[(R.target == t) & (R.protocol == p) & (R.tier == "t2") & (R.variant == "all")]
-            if d.empty:
-                continue
-            Us, Es = [], []
-            for _, r in d.iterrows():
-                P = preds(r.dir, r.split); Us.append(P["unc"]); Es.append(np.abs(P["y"] - P["ens"]))
-            u, e = np.concatenate(Us), np.concatenate(Es)
-            dec = pd.qcut(u, 10, labels=False, duplicates="drop")
-            m = pd.Series(e).groupby(dec).mean()
-            ax[1].plot(m.index + 1, m / e.mean(), ls, color=c, label=NICE[t] if p == "doi" else None)
-    ax[1].set_xlabel("Spread decile"); ax[1].set_ylabel("MAE / overall MAE")
-    ax[1].set_title("(b) solid: DOI-grouped, dotted: random"); ax[1].legend(frameon=False, fontsize=6)
-    fig.tight_layout(); fig.savefig(FIG / "fig_uncertainty.png", dpi=300); plt.close(fig)
-
+# ---------------------------------------------------------------- error by target decile (figures: 10_figures.py)
+def error_deciles(R):
     # high-value errors (used in text)
     rows = []
     for t in TGT:
@@ -565,7 +484,7 @@ def channels(R):
     for t in TGT:
         D, A = data(t), aligned(t)
         name = D["Name"].fillna("").str.lower().str.replace(r"\s+", " ", regex=True).str.strip()
-        key = (name + "|" + D["Value"].round(3).astype(str)).values
+        key = (name + "|" + D["Value"].map(lambda v: f"{v:.6g}")).values   # 6 significant figures (conductivity is ~1e-4 S/cm)
         spec = A["Specifier"].fillna("").str.lower()
         theo = spec.str.contains("theoretical").values
         skey = np.array(["".join("1" if __import__("re").search(k, x) else "0" for k in SPEC_KEYS) for x in spec])
@@ -637,12 +556,12 @@ def main():
     population(); feature_counts()
     D = paired(R); U = uncertainty(R); overlap(R); series(R, S); label_errors(R)
     G, F = shap_shares(R)
-    figures(S, U, G, F, R)
+    error_deciles(R)
     previous()
     channels(R)
     extras()
     (RES / "paper_values.json").write_text(json.dumps(V, indent=1, sort_keys=True))
-    print(f"{len(V)} values -> results/paper_values.json; figures -> {FIG}")
+    print(f"{len(V)} values -> results/paper_values.json")
 
 
 if __name__ == "__main__":
