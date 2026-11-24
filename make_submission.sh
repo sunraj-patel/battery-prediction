@@ -9,7 +9,6 @@ cd "$(dirname "$0")"
 [ "${SKIP_ANALYSIS:-0}" = 1 ] || { python3 -W ignore scripts/05_analysis.py > /dev/null; python3 -W ignore scripts/12_repeated_diagnostics.py > /dev/null; }
 python3 -W ignore scripts/10_figures.py > /dev/null 2>&1   # data figures
 python3 scripts/11_schematics.py > /dev/null               # TikZ schematics (tectonic)
-python3 scripts/fig_toc.py > /dev/null
 python3 scripts/06_fill_paper.py
 OUT=submission; BUILD=$(mktemp -d); rm -rf $OUT; mkdir -p $OUT
 cp -r paper/ml.tex paper/supplementary.tex paper/cover_letter.tex paper/references_battery.bib paper/figures paper/figures_src "$BUILD"/
@@ -31,7 +30,7 @@ for pair in cell:battery_cell workflow:workflow dist:fig_target_distributions sp
   n=$(sed -n "s/^\\\\newlabel{fig:$lab}{{\([0-9]*\)}.*/\1/p" "$BUILD/ml.aux")
   cp paper/figures/$file.pdf $OUT/Patel_Fig$n.pdf; cp paper/figures/$file.png $OUT/Patel_Fig$n.png
 done
-cp paper/figures/toc.png $OUT/Patel_TOC_graphic.png; cp paper/figures/toc.tif $OUT/Patel_TOC_graphic.tif
+cp paper/figures/toc_graphic.png $OUT/Patel_TOC_graphic.png; cp paper/figures/toc_graphic.tif $OUT/Patel_TOC_graphic.tif
 cp "$BUILD/cover_letter.pdf" $OUT/Patel_CoverLetter.pdf
 ( cd "$BUILD/acs" && zip -qr ../latex_source.zip Patel_Manuscript.tex references_battery.bib figures )
 cp "$BUILD/latex_source.zip" $OUT/Patel_LaTeX_source.zip

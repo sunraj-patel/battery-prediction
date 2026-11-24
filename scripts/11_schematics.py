@@ -13,5 +13,9 @@ for tex in sorted(SRC.glob("*.tex")):
         subprocess.run(["tectonic", "--outdir", d, str(tex)], check=True, capture_output=True)
         pdf = FIG / f"{tex.stem}.pdf"
         shutil.copy(Path(d) / f"{tex.stem}.pdf", pdf)
-    fitz.open(pdf)[0].get_pixmap(dpi=600).save(FIG / f"{tex.stem}.png")
+    pix = fitz.open(pdf)[0].get_pixmap(dpi=600)
+    pix.save(FIG / f"{tex.stem}.png")
+    if tex.stem == "toc_graphic":   # ACS TOC graphic: also TIF
+        from PIL import Image
+        Image.open(FIG / f"{tex.stem}.png").save(FIG / f"{tex.stem}.tif", dpi=(600, 600), compression="tiff_lzw")
     print(pdf)
