@@ -1,1 +1,0 @@
-DOI-grouped splits barely lower R² on a text-mined battery database; values repeated across papers, not shared publications, inflate scores.

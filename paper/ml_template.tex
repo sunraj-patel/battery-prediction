@@ -1,27 +1,21 @@
-\documentclass[3p]{elsarticle}
+\documentclass[journal=jcisd8,manuscript=article,layout=traditional]{achemso}
+\setkeys{acs}{articletitle=true,etalmode=truncate,maxauthors=10}
 
-\biboptions{super,sort&compress}
-
-% Standard package includes for math, tables, and images
 \usepackage{float}
 \usepackage{enumitem}
-\usepackage{subcaption}
 \usepackage{amsmath}
 \usepackage{booktabs}
 \usepackage{graphicx}
 \usepackage{url}
 \usepackage{stfloats}
 \usepackage{tabularx}
-\usepackage{setspace}
+\usepackage{adjustbox}
 \usepackage{xcolor}
-
-% Font and layout improvements
 \usepackage[T1]{fontenc}
-\usepackage{lmodern} % scalable T1 fonts (needed for microtype on TeX installs without cm-super)
+\usepackage{lmodern}
 \usepackage[utf8]{inputenc}
 \usepackage{microtype}
 \usepackage{inconsolata}
-\usepackage{hyperref}
 
 % TBD placeholders are filled from results/paper_values.json by scripts/06_fill_paper.py.
 \newif\ifshowTBDkeys
@@ -31,42 +25,28 @@
 \newcommand{\TBDcell}[1]{\ifshowTBDkeys\textcolor{red}{\scriptsize\texttt{\detokenize{#1}}}\else\textcolor{red}{TBD}\fi}
 \newcommand{\FIGTBD}[2]{\fbox{\parbox[c][4.5cm][c]{0.9\linewidth}{\centering\textcolor{red}{\textbf{Figure placeholder}}\\[2pt]\texttt{\detokenize{#1}}\\[2pt]\small #2}}}
 
-\journal{Digital Discovery}
-% remove elsarticle's "Preprint submitted to ..." footer and date from the title page
-\makeatletter
-\def\ps@pprintTitle{\let\@oddhead\@empty\let\@evenhead\@empty\def\@oddfoot{\hfil\thepage\hfil}\let\@evenfoot\@oddfoot}
-\makeatother
-
 \emergencystretch=3em
+\renewcommand*\tocentryname{For Table of Contents Only}
+
+\title{Publication-aware prediction of battery material properties from literature-extracted data}
+\author{Sunraj Patel}
+\email{sunrajpatelcph@gmail.com}
+\affiliation{Department of Materials Science and Engineering, Indian Institute of Technology Kanpur, Kanpur 208016, India}
+
 \begin{document}
 
-\begin{frontmatter}
+\begin{tocentry}
+\centering\includegraphics[width=3.25in]{figures/toc.png}
+\end{tocentry}
 
-    \title{Publication-aware prediction of battery material properties from literature-extracted data}
+\begin{abstract}
+Text-mined databases are attractive training sources for property-prediction models, but their records are clustered by publication; we trained CatBoost--XGBoost ensembles for capacity, voltage, $\log_{10}$ conductivity, Coulombic efficiency and energy on 285,243 records of the auto-generated Huang--Cole battery database and evaluated identical models under record-level, publication-grouped (DOI), temporal and composition-grouped splits. Although 30--84\% of target variance lies between publications, DOI grouping lowered $R^2$ only modestly (capacity \TBD{m/capacity/random/t2/r2} to \TBD{m/capacity/doi/t2/r2} with the conservative main feature set, and \TBD{m/capacity/random/t3/r2} to \TBD{m/capacity/doi/t3/r2} with title keywords describing the cell chemistry), because composition descriptors carry little recoverable publication identity. A leakage route that survives DOI grouping is values recurring across the literature: \TBD{rep/doi/share-range} of DOI-grouped test records repeat a (material, value) pair reported by another publication in training and are predicted far better (capacity $R^2$ \TBD{rep/capacity/doi/r2_rep} versus \TBD{rep/capacity/doi/r2_new}), while conductivity and Coulombic efficiency are not usefully predictable ($R^2$ \TBD{rep/conductivity/doi/r2_new} and \TBD{rep/coulombic_efficiency/doi/r2_new} on values without a precedent). Publication-grouped evaluation is therefore necessary but not sufficient, and we recommend composition-grouped or temporal splits, a repeated-value breakdown and a bibliographic-fingerprint test, implemented in an auditable pipeline that also re-runs the two previous regression pipelines on the same database.
+\end{abstract}
 
-    \author{Sunraj Patel\corref{cor1}}
-
-    \cortext[cor1]{Corresponding author.}
-    \ead{sunrajpatelcph@gmail.com}
-
-    \address{Department of Materials Science and Engineering, Indian Institute of Technology Kanpur, Kanpur 208016, India}
-
-
-    \begin{abstract}
-        Text-mined databases provide hundreds of thousands of battery-material property records and are an attractive training source for machine-learning (ML) models, but their records are clustered by publication and evaluation protocols rarely account for it. We trained CatBoost--XGBoost ensembles for five properties (capacity, voltage, $\log_{10}$ conductivity, Coulombic efficiency and energy) on 285,243 records of the auto-generated Huang--Cole database and evaluated identical models under record-level, publication-grouped (DOI), temporal and composition-grouped splits. Between 30\% and 84\% of target variance lies between publications, yet grouping by DOI lowered $R^2$ only modestly (capacity \TBD{m/capacity/random/t2/r2} to \TBD{m/capacity/doi/t2/r2} for the conservative main feature set, and \TBD{m/capacity/random/t3/r2} to \TBD{m/capacity/doi/t3/r2} when title keywords describing the cell chemistry are added). Three analyses explain the difference. Composition descriptors carry little publication identity: a model given only journal and year predicted from them has $R^2 \approx 0$, and composition predicts the journal only when publications are shared between training and test. A further leakage route survives DOI grouping: \TBD{rep/doi/share-range} of DOI-grouped test records repeat a (material, value) pair reported by another publication in training, and these are predicted far better ($R^2$ \TBD{rep/capacity/doi/r2_rep} for capacity) than values without such a precedent (\TBD{rep/capacity/doi/r2_new}). Conductivity and Coulombic efficiency are not usefully predictable from this database: on values without a precedent, $R^2$ is \TBD{rep/conductivity/doi/r2_new} and \TBD{rep/coulombic_efficiency/doi/r2_new}. Holding out whole compositions lowers performance further (capacity \TBD{m/capacity/material/t2/r2}). Leakage therefore needs both clustered targets and features that can recognise the cluster, and a DOI-grouped split removes only one of several routes. We release an auditable pipeline with an explicit list of excluded columns, physical-range filters, a treatment of the database's warning flags, and adapted re-runs of the two previous regression pipelines on the same database.
-    \end{abstract}
-
-    \begin{keyword}
-        Battery materials; Text mining; ChemDataExtractor; Materials informatics; Publication-grouped validation; Data leakage; Uncertainty.
-    \end{keyword}
-
-\end{frontmatter}
-
-% ---------------- INTRODUCTION ----------------
 \section{Introduction}
 \label{sec:intro}
 
-The performance of a rechargeable battery is bounded by the properties of its electrode and electrolyte materials (Fig.~\ref{fig:cell}). Specific capacity and the average electrode potential together set the specific energy of a cell, the conductivity of the electrolyte limits rate capability, and the Coulombic efficiency measures the charge lost to side reactions in each cycle. Thousands of papers report these quantities every year, each for one or a few materials and under conditions, such as current density and cycle number, that the authors choose.
+The performance of a rechargeable battery is bounded by the properties of its electrode and electrolyte materials (Figure~\ref{fig:cell}). Specific capacity and the average electrode potential together set the specific energy of a cell, the conductivity of the electrolyte limits rate capability, and the Coulombic efficiency measures the charge lost to side reactions in each cycle. Thousands of papers report these quantities every year, each for one or a few materials and under conditions, such as current density and cycle number, that the authors choose.
 
 \begin{figure}[htbp]
     \centering
@@ -79,7 +59,7 @@ Text-mining tools such as ChemDataExtractor \cite{swain2016chemdataextractor,mav
 
 Literature-derived records are, however, clustered by publication. One paper may report capacities at several current densities and cycles, for a parent material and its doped or coated variants, all measured in one laboratory; Huang and Cole flag about 40\% of the records as members of such within-paper series \cite{huang2020database}. Under a random split most test records have siblings from the same paper in training, and a model can score well by recognising the paper rather than by learning how a material determines its properties. Grouped, cluster-based and time-split validation are the established remedies \cite{roberts2017crossvalidation,meredig2018cluster,witman2025matfold,sheridan2013timesplit,kapoor2023leakage}, and Jablonka recently showed that composition descriptors can predict the authors, journal and year of a record, so that models may succeed for bibliographic rather than chemical reasons \cite{jablonka2026clever}. Grouping by source publication, the natural unit of dependence in a text-mined database, has not been reported for this database.
 
-Here we ask how much this structure changes the evaluation of models trained on the Huang--Cole database (Fig.~\ref{fig:workflow}). The answer is not the one a simple leakage argument predicts: the records are strongly clustered by publication, yet record-level and DOI-grouped estimates differ only modestly. We trace this to two mechanisms. The available features identify publications poorly, and many reported values recur across publications, so that a DOI-grouped split still lets a model recall them. Our contributions are:
+Here we ask how much this structure changes the evaluation of models trained on the Huang--Cole database (Figure~\ref{fig:workflow}). The answer is not the one a simple leakage argument predicts: the records are strongly clustered by publication, yet record-level and DOI-grouped estimates differ only modestly. We trace this to two mechanisms. The available features identify publications poorly, and many reported values recur across publications, so that a DOI-grouped split still lets a model recall them. Our contributions are:
 
 \begin{enumerate}[label=(\roman*),itemsep=1pt]
     \item an evaluation of five properties under record-level random, DOI-grouped, temporal and composition-grouped splits with the same model and features, together with the share of each target's variance that lies between publications;
@@ -88,12 +68,12 @@ Here we ask how much this structure changes the evaluation of models trained on 
     \item a comparison with the two previous regression pipelines on the same database, re-run on identical partitions.
 \end{enumerate}
 
-\begin{figure*}[t]
+\begin{figure}[htbp]
     \centering
     \FIGTBD{figures/workflow.pdf}{Seven-panel study workflow.}
     \caption{\textbf{Workflow for publication-aware prediction of battery material properties.} (1) The un-merged Huang--Cole records. (2) Records are kept in long format with their DOI, cleaned with physical-range filters, and the database's warning flags are audited: S marks within-paper series and acts as a publication-identity proxy (analysis only), L is a function of the target (excluded) and R is paper-level (title tier only). (3) Descriptors are computed per record from the parsed formula, the material name, the property specifier and conditions, and (separately) the paper title; identity and target-derived columns are never used. (4) Nested feature tiers and controls. (5) Each target is evaluated under record-level random, DOI-grouped, temporal and composition-grouped splits. (6) A CatBoost--XGBoost ensemble is trained per property. (7) Evaluation, grouped SHAP attribution, ensemble-spread uncertainty, leakage-channel analyses and re-runs of previous pipelines.}
     \label{fig:workflow}
-\end{figure*}
+\end{figure}
 
 % ---------------- METHODS ----------------
 \section{Methods}
@@ -113,6 +93,7 @@ Two properties of this structure matter for what follows. First, there is no rec
     \centering\small
     \caption{\textbf{Records in the Huang--Cole database and in the modelling sets.} Raw counts are from \texttt{battery.csv}; publications are unique DOIs after normalisation. Cleaned counts are after the filters in Section~\ref{sec:cleaning}.}
     \label{tab:dataset}
+    \begin{adjustbox}{max width=\textwidth}
     \begin{tabular}{@{}lrrrr@{}}
         \toprule
         Property & Raw records & Raw publications & Modelling records & Modelling publications \\
@@ -132,6 +113,7 @@ Two properties of this structure matter for what follows. First, there is no rec
         \multicolumn{3}{@{}l}{\texttt{Correctness} populated (manual sample)} & \multicolumn{2}{r}{$\approx$500} \\
         \bottomrule
     \end{tabular}
+    \end{adjustbox}
 \end{table}
 
 \subsubsection{Targets}
@@ -188,10 +170,11 @@ Every feature is computed from the fields of a single record. Features are organ
 
 Preprocessing was fitted on each training partition: features missing in more than 80\% of training records were dropped, except the predeclared sparse condition features (current density, C-rate, cycle number), which were kept with a missingness indicator; remaining numeric gaps were imputed with the training median and flagged.
 
-\begin{table*}[t]
+\begin{table}[htbp]
     \centering\small
     \caption{\textbf{Feature blocks and tiers.} Feature counts are after train-fitted preprocessing and can differ slightly between targets and splits; missingness indicators are counted with their base block. The main tier is $t_2$.}
     \label{tab:predictors}
+    \begin{adjustbox}{max width=\textwidth}
     \begin{tabular}{@{}l l r p{8.2cm}@{}}
         \toprule
         Block (prefix) & Group & Features & Content \\
@@ -213,7 +196,8 @@ Preprocessing was fitted on each training partition: features missing in more th
         $t_{2,\mathrm{noise}}$ & \multicolumn{3}{l}{$t_2$ + 32 noise columns (negative control)} \\
         \bottomrule
     \end{tabular}
-\end{table*}
+    \end{adjustbox}
+\end{table}
 
 \subsection{Data Integration and Filtering}
 \label{sec:integration}
@@ -225,11 +209,12 @@ DOIs were normalised (lower-cased; resolver prefixes removed), and records witho
 
 The physical ranges (Table~\ref{tab:targets}) are deliberately wide. They are meant to remove values that cannot be correct for any battery material, not values that are merely unusual. The capacity limit of 4,500~mAh~g$^{-1}$ lies above the theoretical capacities of silicon ($\approx$4,200) and lithium metal ($\approx$3,860); the voltage limit of 6~V lies above the stability window of any electrolyte in the database; Coulombic efficiency cannot exceed 100\%; the conductivity range spans fifteen decades; and the energy limit of 3,000~Wh~kg$^{-1}$ is above any practical cell-level value reported for a material. They are tighter than the extraction limits applied by Huang and Cole (0--5,000~mAh~g$^{-1}$, 0--8~V, 0--5,000~Wh~kg$^{-1}$, $10^{-20}$--$10^{2}$~S~cm$^{-1}$) \cite{huang2020database}.
 
-\begin{table*}[t]
+\begin{table}[htbp]
     \centering\small
     \caption{\textbf{Targets, physical-range filters and records removed.} One model is trained per target. Ranges are inclusive at the upper end. Calc., Out of range and Dupl.\ are the numbers of records removed as Calculated, out of range and exact duplicates; Rec./pub.\ is the median number of records per publication. Counts are records removed at that step (Section~\ref{sec:cleaning}). Between-publication share is the one-way intraclass correlation ICC(1) of the (transformed) target by DOI.}
     \label{tab:targets}
     \setlength{\tabcolsep}{4pt}\footnotesize
+    \begin{adjustbox}{max width=\textwidth}
     \begin{tabular}{@{}lllrrrrr@{}}
         \toprule
         Target & Unit (model scale) & Kept range & Calc. & Out of range & Dupl. & Rec./pub. & ICC(1) \\
@@ -241,7 +226,8 @@ The physical ranges (Table~\ref{tab:targets}) are deliberately wide. They are me
         Energy                & Wh kg$^{-1}$ & $0 < v \le 3000$ & \TBDcell{pop/energy/removed_calculated} & \TBDcell{pop/energy/removed_bounds} & \TBDcell{pop/energy/removed_duplicates} & \TBDcell{pop/energy/records_per_pub_median} & \TBDcell{pop/energy/icc1} \\
         \bottomrule
     \end{tabular}
-\end{table*}
+    \end{adjustbox}
+\end{table}
 
 \subsubsection{Excluded columns}
 \label{sec:forbidden}
@@ -255,14 +241,14 @@ Table~S2 lists every raw column that is never used directly as a predictor and t
 \subsubsection{Model}
 \label{sec:models}
 
-The model is an equal-weight ensemble of CatBoost \cite{prokhorenkova2018catboost} and XGBoost \cite{chen2016xgboost} (ESI, Table~S3). In each split a CatBoost configuration is selected from a predeclared six-point grid of tree depth and L2 regularisation by validation RMSE, refitted with three seeds, and the three predictions averaged. XGBoost is early-stopped on the same validation set, with categorical variables ordinally encoded on the training partition. The ensemble prediction is $\hat y = \tfrac12\,\overline{\hat y}_{\mathrm{CatBoost}} + \tfrac12\,\hat y_{\mathrm{XGBoost}}$. Both learners receive the full list of categorical columns present in the frame (\texttt{meas\_type}, and \texttt{id\_name} in $t_{2,\mathrm{id}}$). No hyperparameter was tuned on test data, and the same settings are used for all targets, tiers and protocols. No training partition is subsampled: every target, tier and protocol is trained on its full training split (up to about 98,000 records for capacity).
+The model is an equal-weight ensemble of CatBoost \cite{prokhorenkova2018catboost} and XGBoost \cite{chen2016xgboost} (Supporting Information, Table~S3). In each split a CatBoost configuration is selected from a predeclared six-point grid of tree depth and L2 regularisation by validation RMSE, refitted with three seeds, and the three predictions averaged. XGBoost is early-stopped on the same validation set, with categorical variables ordinally encoded on the training partition. The ensemble prediction is $\hat y = \tfrac12\,\overline{\hat y}_{\mathrm{CatBoost}} + \tfrac12\,\hat y_{\mathrm{XGBoost}}$. Both learners receive the full list of categorical columns present in the frame (\texttt{meas\_type}, and \texttt{id\_name} in $t_{2,\mathrm{id}}$). No hyperparameter was tuned on test data, and the same settings are used for all targets, tiers and protocols. No training partition is subsampled: every target, tier and protocol is trained on its full training split (up to about 98,000 records for capacity).
 
 
 
 \subsubsection{Evaluation protocols}
 \label{sec:protocols}
 
-Three split protocols were applied to every target with identical model, features and preprocessing (ESI, Table~S4). Splits use scikit-learn \cite{pedregosa2011sklearn}.
+Three split protocols were applied to every target with identical model, features and preprocessing (Supporting Information, Table~S4). Splits use scikit-learn \cite{pedregosa2011sklearn}.
 
 \textbf{Record-level random.} Five repeated \texttt{ShuffleSplit} holdouts (test fraction 0.2, seed 42), with a validation set of 15\% of the remaining records for early stopping and model selection.
 
@@ -318,7 +304,7 @@ Exact TreeSHAP values \cite{shappaper,lundberg2020treeshap} were computed for ea
 \subsection{Performance of the final ensemble under record-level, DOI-grouped and temporal evaluation}
 \label{sec:splits}
 
-Table~\ref{tab:dataset}, Table~\ref{tab:targets} and Fig.~\ref{fig:dist} summarise the modelling sets. After cleaning, the five targets contain \TBD{pop/total/records} records from \TBD{pop/total/publications} publications. The range filters removed \TBD{pop/all/removed_bounds} records in total, most of them \TBD{pop/removed_bounds/which-target}. Publications contribute a median of \TBD{pop/capacity/records_per_pub_median} capacity records but only \TBD{pop/conductivity/records_per_pub_median} conductivity record, so the potential for within-publication leakage differs strongly between targets. The between-publication share of target variance, ICC(1), ranges from \TBD{pop/icc1/min} (\TBD{pop/icc1/argmin}) to \TBD{pop/icc1/max} (\TBD{pop/icc1/argmax}).
+Table~\ref{tab:dataset}, Table~\ref{tab:targets} and Figure~\ref{fig:dist} summarise the modelling sets. After cleaning, the five targets contain \TBD{pop/total/records} records from \TBD{pop/total/publications} publications. The range filters removed \TBD{pop/all/removed_bounds} records in total, most of them \TBD{pop/removed_bounds/which-target}. Publications contribute a median of \TBD{pop/capacity/records_per_pub_median} capacity records but only \TBD{pop/conductivity/records_per_pub_median} conductivity record, so the potential for within-publication leakage differs strongly between targets. The between-publication share of target variance, ICC(1), ranges from \TBD{pop/icc1/min} (\TBD{pop/icc1/argmin}) to \TBD{pop/icc1/max} (\TBD{pop/icc1/argmax}).
 
 \begin{figure}[htbp]
     \centering
@@ -327,14 +313,15 @@ Table~\ref{tab:dataset}, Table~\ref{tab:targets} and Fig.~\ref{fig:dist} summari
     \label{fig:dist}
 \end{figure}
 
-Table~\ref{tab:split} and Fig.~\ref{fig:split}a report the main model ($t_2$) for each target under the three protocols. For capacity, $R^2$ fell from \TBD{m/capacity/random/t2/r2} under record-level splitting to \TBD{m/capacity/doi/t2/r2} under DOI-grouped splitting and \TBD{m/capacity/temporal/t2/r2} under temporal splitting, and MAE rose from \TBD{m/capacity/random/t2/mae} to \TBD{m/capacity/doi/t2/mae}~mAh~g$^{-1}$. The other targets behave in the same way. DOI grouping lowered $R^2$ from \TBD{m/voltage/random/t2/r2} to \TBD{m/voltage/doi/t2/r2} for voltage, from \TBD{m/conductivity/random/t2/r2} to \TBD{m/conductivity/doi/t2/r2} for conductivity, from \TBD{m/coulombic_efficiency/random/t2/r2} to \TBD{m/coulombic_efficiency/doi/t2/r2} for Coulombic efficiency and from \TBD{m/energy/random/t2/r2} to \TBD{m/energy/doi/t2/r2} for energy. The gaps (0.02--0.08) are small given the strong between-publication structure. A large between-publication share is necessary but not sufficient for a record-level advantage: the model must also be able to recognise the publication from its features, and Section~\ref{sec:channels} shows directly that the descriptors here carry little publication identity. With five targets we do not read anything into the ordering of the gaps by ICC(1). Every model beats the constant-mean baseline under every protocol, but Coulombic efficiency only marginally ($R^2 \le 0.1$). The per-specifier median baseline was worse than the constant mean for every target (DOI-grouped capacity RMSE \TBD{m/capacity/doi/specbase/rmse} against \TBD{m/capacity/doi/baseline/rmse}~mAh~g$^{-1}$), so the specifier alone explains little of the variance; its value lies in interaction with the composition.
+Table~\ref{tab:split} and Figure~\ref{fig:split}a report the main model ($t_2$) for each target under the three protocols. For capacity, $R^2$ fell from \TBD{m/capacity/random/t2/r2} under record-level splitting to \TBD{m/capacity/doi/t2/r2} under DOI-grouped splitting and \TBD{m/capacity/temporal/t2/r2} under temporal splitting, and MAE rose from \TBD{m/capacity/random/t2/mae} to \TBD{m/capacity/doi/t2/mae}~mAh~g$^{-1}$. The other targets behave in the same way. DOI grouping lowered $R^2$ from \TBD{m/voltage/random/t2/r2} to \TBD{m/voltage/doi/t2/r2} for voltage, from \TBD{m/conductivity/random/t2/r2} to \TBD{m/conductivity/doi/t2/r2} for conductivity, from \TBD{m/coulombic_efficiency/random/t2/r2} to \TBD{m/coulombic_efficiency/doi/t2/r2} for Coulombic efficiency and from \TBD{m/energy/random/t2/r2} to \TBD{m/energy/doi/t2/r2} for energy. The gaps (0.02--0.08) are small given the strong between-publication structure. A large between-publication share is necessary but not sufficient for a record-level advantage: the model must also be able to recognise the publication from its features, and Section~\ref{sec:channels} shows directly that the descriptors here carry little publication identity. With five targets we do not read anything into the ordering of the gaps by ICC(1). Every model beats the constant-mean baseline under every protocol, but Coulombic efficiency only marginally ($R^2 \le 0.1$). The per-specifier median baseline was worse than the constant mean for every target (DOI-grouped capacity RMSE \TBD{m/capacity/doi/specbase/rmse} against \TBD{m/capacity/doi/baseline/rmse}~mAh~g$^{-1}$), so the specifier alone explains little of the variance; its value lies in interaction with the composition.
 
 Under record-level splitting, \TBD{overlap/random/doi_seen_share} of test records came from publications that also contributed training records. Under DOI-grouped splitting this share is zero, but \TBD{overlap/doi/name_seen_share} of test records had a compound name that occurs in training, compared with \TBD{overlap/random/name_seen_share} under random splitting and \TBD{overlap/temporal/name_seen_share} under temporal splitting. The DOI-grouped result is therefore an estimate of performance on new papers about largely familiar materials, and the temporal result is closer to performance on new materials. Temporal splitting was the strictest of the three publication-level protocols for every target: relative to DOI grouping, capacity lost a further \TBD{d/capacity/temporal-doi/r2} in $R^2$, and the shortfall was largest for energy. Later publications report more materials that are absent from earlier ones (\TBD{overlap/temporal/name_seen_share} of temporal test records had a known name, against \TBD{overlap/doi/name_seen_share} under DOI grouping), so the temporal estimate is closer to prospective use. Holding out whole compositions was stricter than DOI grouping for every target and stricter than the temporal split for voltage, conductivity and energy, with a large spread between splits: capacity reached \TBD{m/capacity/material/t2/r2}, voltage \TBD{m/voltage/material/t2/r2} and conductivity \TBD{m/conductivity/material/t2/r2} (Table~\ref{tab:channels}). The disjoint five-fold grouped check reproduced the repeated-holdout DOI estimates (capacity \TBD{m/capacity/kfold/t2/r2}).
 
-\begin{table*}[t]
+\begin{table}[htbp]
     \centering\small
     \caption{\textbf{Main model ($t_2$) under record-level random, DOI-grouped and temporal evaluation.} Mean $\pm$ sample standard deviation over splits (5, 5 and 3). $N$ is the mean number of test records per split. Units of MAE and RMSE: mAh~g$^{-1}$ (capacity), V (voltage), decades of S~cm$^{-1}$ (conductivity), percentage points (Coulombic efficiency), Wh~kg$^{-1}$ (energy). The last column is the constant-mean baseline RMSE on the DOI-grouped splits.}
     \label{tab:split}
+    \begin{adjustbox}{max width=\textwidth}
     \begin{tabular}{@{}llrcccc@{}}
         \toprule
         Target & Protocol & $N$ & $R^2$ & MAE & RMSE & Baseline RMSE \\
@@ -360,7 +347,8 @@ Under record-level splitting, \TBD{overlap/random/doi_seen_share} of test record
         & Temporal & \TBDcell{m/energy/temporal/t2/n} & \TBDcell{m/energy/temporal/t2/r2} & \TBDcell{m/energy/temporal/t2/mae} & \TBDcell{m/energy/temporal/t2/rmse} & \\
         \bottomrule
     \end{tabular}
-\end{table*}
+    \end{adjustbox}
+\end{table}
 
 \begin{figure}[htbp]
     \centering
@@ -374,14 +362,15 @@ Under record-level splitting, \TBD{overlap/random/doi_seen_share} of test record
 
 The small gap could mean that records from one publication are nearly independent, but Table~\ref{tab:targets} shows the opposite. Under record-level splitting, predicting each test record by the mean of the training records from its own publication, with no information about the material, gives $R^2$ of \TBD{oracle/capacity/samepaper_r2} for capacity, \TBD{oracle/voltage/samepaper_r2} for voltage and \TBD{oracle/energy/samepaper_r2} for energy, a large fraction of what the full model achieves (and nearly all of it for voltage). Publication identity is therefore a strong predictor. The model does not exploit it because its features cannot recover it: from the composition descriptors, the journal of a record is predicted with a micro-F1 of \TBD{ch/capacity/random/journal_f1} when publications are shared between training and test but only \TBD{ch/capacity/doi/journal_f1} when they are not, the publication year barely improves on the training mean, and a model given only the predicted journal and year has $R^2 \approx 0$ under both splits (Section~\ref{sec:previous}). In databases whose records carry process settings, device architectures or characteristic patterns of missing fields, such combinations can be specific to a laboratory and let a record-level split recognise the source; the battery records carry almost none of them.
 
-A second channel is not blocked by DOI grouping (Fig.~\ref{fig:split}b). Under DOI-grouped splitting, \TBD{rep/capacity/doi/share} of capacity test records, \TBD{rep/voltage/doi/share} of voltage records and \TBD{rep/conductivity/doi/share} of conductivity records repeat a (compound name, value) pair that another publication reported in the training set (Table~\ref{tab:channels}). These records are predicted far better than the rest: capacity $R^2$ was \TBD{rep/capacity/doi/r2_rep} on repeated and \TBD{rep/capacity/doi/r2_new} on non-repeated records, and voltage \TBD{rep/voltage/doi/r2_rep} against \TBD{rep/voltage/doi/r2_new}. The repeated share and its advantage are almost the same under record-level splitting (capacity \TBD{rep/capacity/random/share}, $R^2$ \TBD{rep/capacity/random/r2_rep}), which is why the two protocols give similar overall scores: both reward recall of values that recur across the literature. Conductivity and Coulombic efficiency are not usefully predictable from this database. For conductivity, most of the DOI-grouped score comes from recalled values: $R^2$ is \TBD{rep/conductivity/doi/r2_rep} on repeated records and \TBD{rep/conductivity/doi/r2_new} on the rest. Coulombic efficiency is not predicted on either subset (\TBD{rep/coulombic_efficiency/doi/r2_rep} and \TBD{rep/coulombic_efficiency/doi/r2_new}), and for both targets Gaussian-noise columns receive about a quarter of the SHAP attribution (Section~\ref{sec:shap}). Their low overall scores should therefore not be read as weaker versions of the capacity result; they show what remains when recall of repeated values is removed. Theoretical capacities, which are a deterministic function of composition, make up \TBD{theo/capacity/share} of DOI-grouped capacity test records; excluding them lowers capacity $R^2$ from \TBD{m/capacity/doi/t2/r2} to \TBD{notheo/capacity/doi/r2}.
+A second channel is not blocked by DOI grouping (Figure~\ref{fig:split}b). Under DOI-grouped splitting, \TBD{rep/capacity/doi/share} of capacity test records, \TBD{rep/voltage/doi/share} of voltage records and \TBD{rep/conductivity/doi/share} of conductivity records repeat a (compound name, value) pair that another publication reported in the training set (Table~\ref{tab:channels}). These records are predicted far better than the rest: capacity $R^2$ was \TBD{rep/capacity/doi/r2_rep} on repeated and \TBD{rep/capacity/doi/r2_new} on non-repeated records, and voltage \TBD{rep/voltage/doi/r2_rep} against \TBD{rep/voltage/doi/r2_new}. The repeated share and its advantage are almost the same under record-level splitting (capacity \TBD{rep/capacity/random/share}, $R^2$ \TBD{rep/capacity/random/r2_rep}), which is why the two protocols give similar overall scores: both reward recall of values that recur across the literature. Conductivity and Coulombic efficiency are not usefully predictable from this database. For conductivity, most of the DOI-grouped score comes from recalled values: $R^2$ is \TBD{rep/conductivity/doi/r2_rep} on repeated records and \TBD{rep/conductivity/doi/r2_new} on the rest. Coulombic efficiency is not predicted on either subset (\TBD{rep/coulombic_efficiency/doi/r2_rep} and \TBD{rep/coulombic_efficiency/doi/r2_new}), and for both targets Gaussian-noise columns receive about a quarter of the SHAP attribution (Section~\ref{sec:shap}). Their low overall scores should therefore not be read as weaker versions of the capacity result; they show what remains when recall of repeated values is removed. Theoretical capacities, which are a deterministic function of composition, make up \TBD{theo/capacity/share} of DOI-grouped capacity test records; excluding them lowers capacity $R^2$ from \TBD{m/capacity/doi/t2/r2} to \TBD{notheo/capacity/doi/r2}.
 
-\textbf{Robustness of the repeated-value analysis.} Exact matching undercounts restatements that were rounded differently. Matching within 1\% of the value raises the repeated share to \TBD{rpd/capacity/tol1_share} for capacity, \TBD{rpd/voltage/tol1_share} for voltage and \TBD{rpd/energy/tol1_share} for energy, with the same contrast (capacity $R^2$ \TBD{rpd/capacity/tol1_r2_rep} on repeated and \TBD{rpd/capacity/tol1_r2_new} on other records), and rounding to two significant figures gives similar shares (ESI, Table~S8). Repeated pairs are not a product of review articles: repeated test records come from publications with a median of \TBD{rpd/capacity/pubsize_rep_median} capacity records, against \TBD{rpd/capacity/pubsize_new_median} for the other records, and the R flag is rare in both groups (\TBD{rpd/capacity/R_share_rep} versus \TBD{rpd/capacity/R_share_new}). Publication dates do not separate quotation from re-measurement here: the test publication is later than every matching publication for \TBD{rpd/capacity/later_share} of repeated capacity records and earlier for \TBD{rpd/capacity/earlier_share}, which is the near-symmetry expected when publications are assigned to training and test at random, whatever the mechanism. Among repeated capacity records, \TBD{rpd/capacity/class_theo} are theoretical capacities by specifier or by value. A sample of 50 repeated pairs with both source records is provided in the repository for inspection.
+\textbf{Robustness of the repeated-value analysis.} Exact matching undercounts restatements that were rounded differently. Matching within 1\% of the value raises the repeated share to \TBD{rpd/capacity/tol1_share} for capacity, \TBD{rpd/voltage/tol1_share} for voltage and \TBD{rpd/energy/tol1_share} for energy, with the same contrast (capacity $R^2$ \TBD{rpd/capacity/tol1_r2_rep} on repeated and \TBD{rpd/capacity/tol1_r2_new} on other records), and rounding to two significant figures gives similar shares (Supporting Information, Table~S8). Repeated pairs are not a product of review articles: repeated test records come from publications with a median of \TBD{rpd/capacity/pubsize_rep_median} capacity records, against \TBD{rpd/capacity/pubsize_new_median} for the other records, and the R flag is rare in both groups (\TBD{rpd/capacity/R_share_rep} versus \TBD{rpd/capacity/R_share_new}). Publication dates do not separate quotation from re-measurement here: the test publication is later than every matching publication for \TBD{rpd/capacity/later_share} of repeated capacity records and earlier for \TBD{rpd/capacity/earlier_share}, which is the near-symmetry expected when publications are assigned to training and test at random, whatever the mechanism. Among repeated capacity records, \TBD{rpd/capacity/class_theo} are theoretical capacities by specifier or by value. A sample of 50 repeated pairs with both source records is provided in the repository for inspection.
 
-\begin{table*}[t]
+\begin{table}[htbp]
     \centering\small
     \caption{\textbf{Leakage channels by target} ($t_2$ ensemble; mean over splits). Same-pub.: $R^2$ of the same-publication mean under record-level splitting. Repeated: share of DOI-grouped test records whose (name, value) pair occurs in a training record of another publication, with $R^2$ on repeated and non-repeated records. Comp.-grouped: $R^2$ under composition-grouped splitting.}
     \label{tab:channels}
+    \begin{adjustbox}{max width=\textwidth}
     \begin{tabular}{@{}lccccc@{}}
         \toprule
         Target & Same-pub.\ $R^2$ & Repeated share (DOI) & $R^2$ repeated & $R^2$ non-repeated & Comp.-grouped $R^2$ \\
@@ -393,7 +382,8 @@ A second channel is not blocked by DOI grouping (Fig.~\ref{fig:split}b). Under D
         Energy         & \TBDcell{oracle/energy/samepaper_r2} & \TBDcell{rep/energy/doi/share} & \TBDcell{rep/energy/doi/r2_rep} & \TBDcell{rep/energy/doi/r2_new} & \TBDcell{m/energy/material/t2/r2} \\
         \bottomrule
     \end{tabular}
-\end{table*}
+    \end{adjustbox}
+\end{table}
 
 \subsection{Effect of the paper-level (title-keyword) features and controls}
 \label{sec:tiers}
@@ -402,14 +392,15 @@ Table~\ref{tab:tiers} reports DOI-grouped $R^2$ for every tier and target. Addin
 
 \textbf{Noise control.} The 32 noise columns changed DOI-grouped $R^2$ by \TBD{d/all/doi/noise-t2/r2-range} across targets and received \TBD{shap/noise/share} of the total SHAP attribution (Table~\ref{tab:shap}). The models do not benefit from noise, but for the weak conductivity and Coulombic-efficiency models the noise columns receive about a quarter of the attribution: when the signal is weak, TreeSHAP spreads attribution over whatever the trees split on, and the feature rankings for these two targets should not be interpreted.
 
-\textbf{Paper-level title keywords.} Adding title keywords and the R flag ($t_3 - t_2$) changed $R^2$ by \TBD{d/capacity/random/t3-t2/r2} under random splitting and by \TBD{d/capacity/doi/t3-t2/r2} \TBD{ci/capacity/doi/t3-t2/r2} under DOI-grouped splitting for capacity (ESI, Table~S5). Unlike the paper-level features that are usually suspected of identifying publications, the title keywords help almost as much under DOI grouping as under random splitting for capacity and voltage, somewhat less for energy and Coulombic efficiency, and not significantly for conductivity; the gain is largest for energy ($\Delta R^2$ \TBD{d/energy/doi/t3-t2/r2} \TBD{ci/energy/doi/t3-t2/r2}). They therefore carry chemistry rather than identity: the formula of the active material does not say whether it was tested in a lithium-ion, sodium-ion, Li--S or Li--O$_2$ cell, and the title does. This is the largest gain of any feature block we tested. We keep the title keywords out of the main tier only as a conservative choice, because the information is constant within a publication and describes how a paper presents its system rather than the material; a model that includes them ($t_3$, Table~\ref{tab:tiers}) is equally legitimate when the cell chemistry is known, and reaches DOI-grouped $R^2$ of \TBD{m/capacity/doi/t3/r2} for capacity, \TBD{m/voltage/doi/t3/r2} for voltage and \TBD{m/energy/doi/t3/r2} for energy.
+\textbf{Paper-level title keywords.} Adding title keywords and the R flag ($t_3 - t_2$) changed $R^2$ by \TBD{d/capacity/random/t3-t2/r2} under random splitting and by \TBD{d/capacity/doi/t3-t2/r2} \TBD{ci/capacity/doi/t3-t2/r2} under DOI-grouped splitting for capacity (Supporting Information, Table~S5). Unlike the paper-level features that are usually suspected of identifying publications, the title keywords help almost as much under DOI grouping as under random splitting for capacity and voltage, somewhat less for energy and Coulombic efficiency, and not significantly for conductivity; the gain is largest for energy ($\Delta R^2$ \TBD{d/energy/doi/t3-t2/r2} \TBD{ci/energy/doi/t3-t2/r2}). They therefore carry chemistry rather than identity: the formula of the active material does not say whether it was tested in a lithium-ion, sodium-ion, Li--S or Li--O$_2$ cell, and the title does. This is the largest gain of any feature block we tested. We keep the title keywords out of the main tier only as a conservative choice, because the information is constant within a publication and describes how a paper presents its system rather than the material; a model that includes them ($t_3$, Table~\ref{tab:tiers}) is equally legitimate when the cell chemistry is known, and reaches DOI-grouped $R^2$ of \TBD{m/capacity/doi/t3/r2} for capacity, \TBD{m/voltage/doi/t3/r2} for voltage and \TBD{m/energy/doi/t3/r2} for energy.
 
 \textbf{Identity admission.} Adding the compound name as a categorical variable ($t_{2,\mathrm{id}} - t_2$) changed DOI-grouped $R^2$ by \TBD{d/capacity/doi/t2_id-t2/r2} for capacity and by \TBD{d/all/doi/t2_id-t2/r2-range} across targets. Under DOI grouping the effect is within $\pm0.01$ for every target (positive only for energy, \TBD{d/energy/doi/t2_id-t2/r2} \TBD{ci/energy/doi/t2_id-t2/r2}); under random splitting the name added slightly more (capacity \TBD{d/capacity/random/t2_id-t2/r2}), a mild identity effect that largely disappears when publications are separated. Because the composition block already nearly determines the material, the name adds little beyond it.
 
-\begin{table*}[t]
+\begin{table}[htbp]
     \centering\small
     \caption{\textbf{DOI-grouped $R^2$ by feature tier} (mean $\pm$ sample standard deviation over five splits; same splits for all tiers).}
     \label{tab:tiers}
+    \begin{adjustbox}{max width=\textwidth}
     \begin{tabular}{@{}lccccc@{}}
         \toprule
         Tier & Capacity & Voltage & Conductivity & Coulombic eff. & Energy \\
@@ -422,23 +413,24 @@ Table~\ref{tab:tiers} reports DOI-grouped $R^2$ for every tier and target. Addin
         $t_{2,\mathrm{noise}}$  & \TBDcell{m/capacity/doi/t2_noise/r2} & \TBDcell{m/voltage/doi/t2_noise/r2} & \TBDcell{m/conductivity/doi/t2_noise/r2} & \TBDcell{m/coulombic_efficiency/doi/t2_noise/r2} & \TBDcell{m/energy/doi/t2_noise/r2} \\
         \bottomrule
     \end{tabular}
-\end{table*}
+    \end{adjustbox}
+\end{table}
 
 
 
 \subsection{Prediction distribution and errors}
 \label{sec:prediction_diagnostics}
 
-\textbf{Predicted versus reported values.} Fig.~\ref{fig:diag} pools the DOI-grouped test predictions of the five splits. For capacity, voltage and energy the predictions follow the reported values but are compressed towards the centre of the distribution, and the predicted distributions are narrower than the reported ones. For Coulombic efficiency the model predicts values near 80\% for almost every record and misses the large mass of reported values close to 100\%; for conductivity it captures the main mode but not the tails. These patterns match the low $R^2$ of the last two targets and the under-prediction of high values discussed below.
+\textbf{Predicted versus reported values.} Figure~\ref{fig:diag} pools the DOI-grouped test predictions of the five splits. For capacity, voltage and energy the predictions follow the reported values but are compressed towards the centre of the distribution, and the predicted distributions are narrower than the reported ones. For Coulombic efficiency the model predicts values near 80\% for almost every record and misses the large mass of reported values close to 100\%; for conductivity it captures the main mode but not the tails. These patterns match the low $R^2$ of the last two targets and the under-prediction of high values discussed below.
 
-\begin{figure*}[t]
+\begin{figure}[htbp]
     \centering
     \FIGTBD{figures/fig_diagnostics.pdf}{Parity hexbins and predicted/reported distributions per target.}
     \caption{\textbf{Prediction diagnostics of the $t_2$ ensemble on DOI-grouped test records} (five splits pooled; a record can appear in more than one test set). Top: predicted versus reported values (log-scaled hexagonal bins; dashed line $y=x$), with $R^2$ and MAE of the pooled predictions. Bottom: distributions of reported (grey) and predicted (blue outline) values on the same axes.}
     \label{fig:diag}
-\end{figure*}
+\end{figure}
 
-\textbf{Member spread and absolute error.} Fig.~\ref{fig:unc} relates the spread of the ensemble members to the error. The Spearman correlation between member spread and absolute error was \TBD{unc/capacity/doi/spearman} for capacity under DOI-grouped evaluation and \TBD{unc/capacity/random/spearman} under random evaluation (ESI, Table~S6). The mean spread for DOI-grouped test records was \TBD{unc/capacity/spread_ratio_doi_over_random} times that for record-level test records. Records in the top decile of spread had an MAE of \TBD{unc/capacity/doi/mae_top_decile}, compared with \TBD{unc/capacity/doi/mae_bottom_decile} in the bottom decile. The spread is informative only for capacity and energy ($\rho \approx 0.35$); for voltage, conductivity and Coulombic efficiency $\rho \le 0.16$. It rises only slightly for publications not seen in training (ratio 1.03--1.17), much less than the error does. Four members that share data and hyperparameters are not a substitute for a calibrated interval, and we use the spread only to rank records for inspection.
+\textbf{Member spread and absolute error.} Figure~\ref{fig:unc} relates the spread of the ensemble members to the error. The Spearman correlation between member spread and absolute error was \TBD{unc/capacity/doi/spearman} for capacity under DOI-grouped evaluation and \TBD{unc/capacity/random/spearman} under random evaluation (Supporting Information, Table~S6). The mean spread for DOI-grouped test records was \TBD{unc/capacity/spread_ratio_doi_over_random} times that for record-level test records. Records in the top decile of spread had an MAE of \TBD{unc/capacity/doi/mae_top_decile}, compared with \TBD{unc/capacity/doi/mae_bottom_decile} in the bottom decile. The spread is informative only for capacity and energy ($\rho \approx 0.35$); for voltage, conductivity and Coulombic efficiency $\rho \le 0.16$. It rises only slightly for publications not seen in training (ratio 1.03--1.17), much less than the error does. Four members that share data and hyperparameters are not a substitute for a calibrated interval, and we use the spread only to rank records for inspection.
 
 
 
@@ -457,6 +449,7 @@ Table~\ref{tab:tiers} reports DOI-grouped $R^2$ for every tier and target. Addin
     \centering\small
     \caption{\textbf{Sensitivity to within-paper series.} $R^2$ of the $t_2$ ensemble with all records and with S-flagged records removed.}
     \label{tab:series}
+    \begin{adjustbox}{max width=\textwidth}
     \begin{tabular}{@{}lcccc@{}}
         \toprule
         & \multicolumn{2}{c}{All records} & \multicolumn{2}{c}{Without S} \\
@@ -470,6 +463,7 @@ Table~\ref{tab:tiers} reports DOI-grouped $R^2$ for every tier and target. Addin
         Energy         & \TBDcell{m/energy/random/t2/r2} & \TBDcell{m/energy/doi/t2/r2} & \TBDcell{ser/energy/random/r2} & \TBDcell{ser/energy/doi/r2} \\
         \bottomrule
     \end{tabular}
+    \end{adjustbox}
 \end{table}
 
 \textbf{Data quality of the extracted records.} Four consequences of the extraction errors described in Section~\ref{sec:quality} follow. First, with roughly one record in five wrong in at least one field, the achievable $R^2$ is bounded well below one even for a perfect model, and errors in the value or the property assignment act as label noise that no feature can explain. Second, F1 and F2 errors corrupt the composition features themselves; the raw file contains, for example, a record named ``Carbon'' whose parsed composition is C$_{12}$H$_{22}$O$_{11}$ (sucrose, presumably the carbon source in that paper). Third, because the evaluation sample was augmented for rare properties, it is not a simple random sample, and the precision values should be taken as approximate. Fourth, the Correctness sample is too small to estimate model error separately for correct and incorrect records with any precision; we report descriptively that the DOI-grouped absolute error of the \TBD{corr/n_test} labelled records that fell in test partitions was \TBD{corr/mae_T} for records marked correct and \TBD{corr/mae_F} for those marked incorrect. Our physical-range filter removes only the grossest errors; values that are wrong but plausible remain.
@@ -477,7 +471,7 @@ Table~\ref{tab:tiers} reports DOI-grouped $R^2$ for every tier and target. Addin
 \subsection{Interpretation of model predictions}
 \label{sec:shap}
 
-Table~\ref{tab:shap} and Fig.~\ref{fig:shap} give the share of mean $|$SHAP$|$ by feature group for the $t_2$ ensembles under DOI-grouped evaluation (and for the noise columns in $t_{2,\mathrm{noise}}$). For capacity, measurement-context features accounted for \TBD{shap/capacity/measurement/share}, composition for \TBD{shap/capacity/composition/share}, elemental properties for \TBD{shap/capacity/material/share} and name flags for \TBD{shap/capacity/material_text/share}. The highest-ranked individual feature was \TBD{shapf/capacity/rank1/feature} (\TBD{shapf/capacity/rank1/mean_abs_shap}~mAh~g$^{-1}$). Elemental-property statistics carry the largest share for every target (50--70\%), composition fractions most of the remainder, and the name flags less than 5\%. Measurement context matters mainly for capacity (\TBD{shap/capacity/measurement/share}), where the specifier and current density distinguish theoretical from measured and low-rate from high-rate values, and hardly at all for Coulombic efficiency. The leading individual features are chemically plausible: silicon fraction and ionisation-energy and group statistics for capacity, Mendeleev-number and electronegativity ranges and lithium fraction for voltage, and lithium content for energy, which is dominated by Li--S and Li--O$_2$ systems at the high end. For conductivity and Coulombic efficiency the noise control shows that rankings are unreliable (Section~\ref{sec:tiers}).
+Table~\ref{tab:shap} and Figure~\ref{fig:shap} give the share of mean $|$SHAP$|$ by feature group for the $t_2$ ensembles under DOI-grouped evaluation (and for the noise columns in $t_{2,\mathrm{noise}}$). For capacity, measurement-context features accounted for \TBD{shap/capacity/measurement/share}, composition for \TBD{shap/capacity/composition/share}, elemental properties for \TBD{shap/capacity/material/share} and name flags for \TBD{shap/capacity/material_text/share}. The highest-ranked individual feature was \TBD{shapf/capacity/rank1/feature} (\TBD{shapf/capacity/rank1/mean_abs_shap}~mAh~g$^{-1}$). Elemental-property statistics carry the largest share for every target (50--70\%), composition fractions most of the remainder, and the name flags less than 5\%. Measurement context matters mainly for capacity (\TBD{shap/capacity/measurement/share}), where the specifier and current density distinguish theoretical from measured and low-rate from high-rate values, and hardly at all for Coulombic efficiency. The leading individual features are chemically plausible: silicon fraction and ionisation-energy and group statistics for capacity, Mendeleev-number and electronegativity ranges and lithium fraction for voltage, and lithium content for energy, which is dominated by Li--S and Li--O$_2$ systems at the high end. For conductivity and Coulombic efficiency the noise control shows that rankings are unreliable (Section~\ref{sec:tiers}).
 
 Attributions to composition and elemental-property features should be read with care. Elemental statistics are functions of composition and can act as a coordinate system for recognising familiar materials; a high attribution does not mean the model has learned a physical relationship between, for example, electronegativity and voltage.
 
@@ -485,6 +479,7 @@ Attributions to composition and elemental-property features should be read with 
     \centering\small
     \caption{\textbf{Share of mean $|$SHAP$|$ by feature group} ($t_2$ ensembles, DOI-grouped test records; mean over five splits; noise share from $t_{2,\mathrm{noise}}$).}
     \label{tab:shap}
+    \begin{adjustbox}{max width=\textwidth}
     \begin{tabular}{@{}lccccc@{}}
         \toprule
         Group & Capacity & Voltage & Conductivity & Coulombic eff. & Energy \\
@@ -497,6 +492,7 @@ Attributions to composition and elemental-property features should be read with 
         Noise ($t_{2,\mathrm{noise}}$) & \TBDcell{shap/capacity/noise/share} & \TBDcell{shap/voltage/noise/share} & \TBDcell{shap/conductivity/noise/share} & \TBDcell{shap/coulombic_efficiency/noise/share} & \TBDcell{shap/energy/noise/share} \\
         \bottomrule
     \end{tabular}
+    \end{adjustbox}
 \end{table}
 
 \begin{figure}[htbp]
@@ -511,10 +507,11 @@ Attributions to composition and elemental-property features should be read with 
 
 Screening the 167 works that cite the database in the Semantic Scholar index (November 2026) found two groups that train models on its records (Table~\ref{tab:previous}); most other citing works are reviews, extraction tools or databases for other properties. Zhuang and Barnard used its formulas to study composition encodings, first by clustering and classifying the encoded formulas \cite{zhuang2023mendeleev,zhuang2024classification,zhuang2025applications} and then by regression \cite{zhuang2024property}: the Mendeleev+ encoding with XGBoost, trained on 254,749 cleaned records with a random 85/15 split, gave test $R^2$ of 0.47--0.50 for capacity, voltage and energy and below 0.15 for Coulombic efficiency and conductivity, and nearly the same values when only one record per formula was kept. Jablonka used 33,701 unflagged capacity records as one of five case studies of bibliographic confounding, with 273 matminer descriptors \cite{ward2018matminer,ward2016magpie,meredig2014combinatorial} and default LightGBM \cite{ke2017lightgbm} evaluated by random 10-fold cross-validation, and recommended group and time splits as routine falsification tests \cite{jablonka2026clever}.
 
-\begin{table*}[t]
+\begin{table}[htbp]
     \centering\small
     \caption{\textbf{Previous studies that model records of the Huang--Cole database, and this work.} Values are as reported by each study; tasks, record selection and evaluation differ, so rows are not directly comparable.}
     \label{tab:previous}
+    \begin{adjustbox}{max width=\textwidth}
     \begin{tabular}{@{}p{2.6cm} p{2.6cm} p{3.0cm} p{2.4cm} p{2.6cm} p{2.2cm}@{}}
         \toprule
         Study & Task & Records & Features / model & Evaluation & Reported \\
@@ -526,14 +523,16 @@ Screening the 167 works that cite the database in the Semantic Scholar index (No
         This work & five properties & \TBDcell{pop/total/records} records, \TBDcell{pop/total/publications} publications & composition, elemental, name and measurement features; CatBoost--XGBoost & random / DOI-grouped / temporal, 5 repeats & capacity $R^2$ \TBDcell{m/capacity/random/t2/r2} / \TBDcell{m/capacity/doi/t2/r2} / \TBDcell{m/capacity/temporal/t2/r2} \\
         \bottomrule
     \end{tabular}
-\end{table*}
+    \end{adjustbox}
+\end{table}
 
-\textbf{Adapted pipelines on common partitions.} We ran the public code of Jablonka unchanged (composition parsing, descriptors, preprocessing and model) on our split-1 partitions; as in that code, records with any non-computable descriptor are dropped, which keeps \TBD{prev/coverage/min}--\TBD{prev/coverage/max} of the test records, and the ensemble is scored on the same subset. The Zhuang--Barnard regression notebook is part of the supporting information of their article, so we re-implemented the workflow from their Methods with a smaller hyperparameter search (25 configurations, 3-fold cross-validation on at most 20,000 records, instead of 1,000 with 10-fold). Table~\ref{tab:adapted} gives both pipelines for every target. The comparison asks whether the protocol effect is specific to our workflow, not which model is best, and the ensemble is not uniformly better (for DOI-grouped conductivity the adapted Jablonka pipeline scores higher). We use one partition because each adapted pipeline needs its own featurisation and, for Zhuang--Barnard, its own hyperparameter search; differences smaller than the split-to-split standard deviations in Table~\ref{tab:split} (up to 0.08, for energy) are not interpreted. On the records released by Zhuang and Barnard, the re-implementation reproduced their random-split $R^2$ for capacity (\TBD{zbB/capacity/random/r2} versus 0.473) and voltage to within 0.01, and a DOI-grouped split lowered capacity $R^2$ to \TBD{zbB/capacity/doi/r2} (ESI, Table~S7): the same moderate, target-dependent effect that we find with our own records, features and model.
+\textbf{Adapted pipelines on common partitions.} We ran the public code of Jablonka unchanged (composition parsing, descriptors, preprocessing and model) on our split-1 partitions; as in that code, records with any non-computable descriptor are dropped, which keeps \TBD{prev/coverage/min}--\TBD{prev/coverage/max} of the test records, and the ensemble is scored on the same subset. The Zhuang--Barnard regression notebook is part of the supporting information of their article, so we re-implemented the workflow from their Methods with a smaller hyperparameter search (25 configurations, 3-fold cross-validation on at most 20,000 records, instead of 1,000 with 10-fold). Table~\ref{tab:adapted} gives both pipelines for every target. The comparison asks whether the protocol effect is specific to our workflow, not which model is best, and the ensemble is not uniformly better (for DOI-grouped conductivity the adapted Jablonka pipeline scores higher). We use one partition because each adapted pipeline needs its own featurisation and, for Zhuang--Barnard, its own hyperparameter search; differences smaller than the split-to-split standard deviations in Table~\ref{tab:split} (up to 0.08, for energy) are not interpreted. On the records released by Zhuang and Barnard, the re-implementation reproduced their random-split $R^2$ for capacity (\TBD{zbB/capacity/random/r2} versus 0.473) and voltage to within 0.01, and a DOI-grouped split lowered capacity $R^2$ to \TBD{zbB/capacity/doi/r2} (Supporting Information, Table~S7): the same moderate, target-dependent effect that we find with our own records, features and model.
 
-\begin{table*}[t]
+\begin{table}[htbp]
     \centering\small
     \caption{\textbf{Adapted pipelines of Jablonka \cite{jablonka2026clever} and Zhuang and Barnard \cite{zhuang2024property} and the CatBoost--XGBoost ensemble on common partitions} (split~1; each adapted pipeline is paired with the ensemble scored on exactly the test records that pipeline can featurise; single-partition values without standard deviations). Cells give $R^2$ / MAE; MAE units as in Table~\ref{tab:split}.}
     \label{tab:adapted}
+    \begin{adjustbox}{max width=\textwidth}
     \begin{tabular}{@{}llccccc@{}}
         \toprule
         Split & Model & Capacity & Voltage & Conductivity & Coulombic eff. & Energy \\
@@ -549,9 +548,10 @@ Screening the 167 works that cite the database in the Semantic Scholar index (No
         & \quad ensemble, same records & \TBDcell{prev/capacity/doi/ens_zb/r2} / \TBDcell{prev/capacity/doi/ens_zb/mae} & \TBDcell{prev/voltage/doi/ens_zb/r2} / \TBDcell{prev/voltage/doi/ens_zb/mae} & \TBDcell{prev/conductivity/doi/ens_zb/r2} / \TBDcell{prev/conductivity/doi/ens_zb/mae} & \TBDcell{prev/coulombic_efficiency/doi/ens_zb/r2} / \TBDcell{prev/coulombic_efficiency/doi/ens_zb/mae} & \TBDcell{prev/energy/doi/ens_zb/r2} / \TBDcell{prev/energy/doi/ens_zb/mae} \\
         \bottomrule
     \end{tabular}
-\end{table*}
+    \end{adjustbox}
+\end{table}
 
-\textbf{Bibliographic fingerprints.} Repeating Jablonka's metadata test with the journal and year in the database (author lists are not released), the descriptors predicted the journal noticeably better than chance only when publications were shared between training and test (capacity micro-F1 \TBD{ch/capacity/random/journal_f1} versus \TBD{ch/capacity/doi/journal_f1}), and a model given only the predicted journal and year reached a capacity $R^2$ of \TBD{ch/capacity/random/indirect_r2} (random) and \TBD{ch/capacity/doi/indirect_r2} (DOI-grouped), with the same result for every target (ESI, Table~S1). In this database, descriptor-based fingerprints are weak and mostly reflect shared publications.
+\textbf{Bibliographic fingerprints.} Repeating Jablonka's metadata test with the journal and year in the database (author lists are not released), the descriptors predicted the journal noticeably better than chance only when publications were shared between training and test (capacity micro-F1 \TBD{ch/capacity/random/journal_f1} versus \TBD{ch/capacity/doi/journal_f1}), and a model given only the predicted journal and year reached a capacity $R^2$ of \TBD{ch/capacity/random/indirect_r2} (random) and \TBD{ch/capacity/doi/indirect_r2} (DOI-grouped), with the same result for every target (Supporting Information, Table~S1). In this database, descriptor-based fingerprints are weak and mostly reflect shared publications.
 
 \textbf{Implications for evaluating models on text-mined data.} Clustered targets alone did not produce a large record-level advantage: a model can exploit only the publication identity that its inputs encode, so the random-versus-grouped comparison has to be run for each feature set rather than inferred from the between-publication variance. DOI grouping, in turn, cannot separate values that are restated across publications, and with an extraction precision of about 80\% such repetition can also propagate extraction errors. Composition-grouped and temporal splits, and the repeated/non-repeated breakdown, are needed to estimate performance on values without a precedent in the literature, which is the case that matters for discovery.
 
@@ -561,31 +561,32 @@ Screening the 167 works that cite the database in the Semantic Scholar index (No
 DOI-grouped evaluation tests performance on publications excluded from training; it does not guarantee independence of laboratories or research groups, and author information is not part of the release. Our repeated-value analysis matches on the normalised compound name, so it misses restatements under a different name, and the tolerance-based matches show that exact matching undercounts recurrence; neither publication dates nor rule-based classes distinguish quotation from independent re-measurement. Composition grouping uses rounded atomic fractions of the parsed formula and therefore treats composites with the same overall composition as one material. The targets mix quantities that a materials scientist would keep apart (theoretical and measured capacity, average and cut-off voltage, ionic and electronic conductivity), and the specifier flags only partly separate them. Material descriptors are computed from the parsed formula of the active material and ignore binders, conductive additives, electrolytes and counter electrodes \cite{kauwe2019battery}. The database ends with papers published in \TBD{pop/date_max_year}, so the temporal split cannot test generalisation to recent chemistries. We use this release deliberately: the questions are methodological, and it is the database on which the previous models were trained and reported. The adapted pipelines keep the published featurisation and learner but are evaluated on our records and partitions, so they test the workflows on a common task and do not reproduce the published scores. Finally, the extraction errors discussed in Section~\ref{sec:quality} are not removed by any of our filters.
 
 % ---------------- CONCLUSION ----------------
-\section{Conclusion}
+\section{Conclusions}
 \label{sec:conclusion}
 
 We trained CatBoost--XGBoost ensembles on the Huang--Cole auto-generated battery database for five properties and evaluated identical models under record-level, DOI-grouped, temporal and composition-grouped splits. Records are strongly clustered by publication, yet DOI grouping lowered $R^2$ by only 0.02--0.08 (capacity \TBD{m/capacity/random/t2/r2} to \TBD{m/capacity/doi/t2/r2}), because composition descriptors carry little recoverable publication identity. A larger effect comes from values that recur across publications: \TBD{rep/doi/share-range} of DOI-grouped test records have such a precedent and are predicted much better than the rest, and on values without one capacity $R^2$ falls to \TBD{rep/capacity/doi/r2_new} and conductivity and Coulombic efficiency are not usefully predicted (\TBD{rep/conductivity/doi/r2_new} and \TBD{rep/coulombic_efficiency/doi/r2_new}). Temporal and composition-grouped splits lower performance further. Title keywords, which describe the cell chemistry, improve predictions under both split types, the raw compound name changes DOI-grouped $R^2$ by at most 0.01, Gaussian-noise columns receive \TBD{shap/noise/share} of the attribution and do not improve any target, and removing within-paper series narrows the record-level advantage further.
 
 Three recommendations follow for models trained on text-mined materials data. First, report publication-grouped results, but do not treat them as a test of generalisation to new materials: add composition-grouped or temporal splits and report performance separately for values with and without a precedent in the training literature. Second, check whether the features can identify publications, for example with the bibliographic-fingerprint test, before interpreting a small or large random-versus-grouped gap. Third, audit the database's own flags before use, because in this database one flag encodes publication identity and another is a function of the target. Future work should add the experimental context that the database lacks, separate theoretical from measured values at extraction time, and test whether newer extraction pipelines \cite{huang2022batterybert,dagdelen2024structured} change these conclusions.
 
-\section*{Author contributions}
-CRediT roles: conceptualisation, data curation, formal analysis, investigation, methodology, software, validation, visualisation, writing -- original draft, and writing -- review and editing.
+\section{Data and Software Availability}
+The Huang--Cole battery materials database analysed in this study is publicly available from figshare \cite{huang2020figshare} at \url{https://doi.org/10.6084/m9.figshare.11888115}. The code for data preparation, model training, evaluation and the adapted comparison pipelines, the frozen element list, the split fingerprints and all result tables are archived on Zenodo \cite{patel2026batteryprediction} (version v1.0.0) at \url{https://doi.org/10.5281/zenodo.24500203} and developed at \url{https://github.com/sunraj-patel/battery-prediction}. All software used is open source (Python with CatBoost, XGBoost, scikit-learn, SHAP, pymatgen, matminer and LightGBM); package requirements are listed in the archived repository. The adapted pipelines reuse code from \url{https://github.com/lamalab-org/clever-materials-hans} (MIT licence) and data files from \url{https://github.com/ZoraZhuang/battery_datasets} (GPL-3.0).
 
-\section*{Conflicts of interest}
-There are no conflicts to declare.
+\begin{suppinfo}
+Bibliographic-fingerprint test for all targets; columns excluded from the predictors with reasons; model configuration; split-protocol partition sizes; paper-level and identity controls under both split types; ensemble-spread statistics; re-run of the Zhuang--Barnard workflow on its own records; diagnostics of repeated (name, value) pairs (Tables S1--S8) (PDF)
+\end{suppinfo}
 
-\section*{Data availability}
-The Huang--Cole battery materials database analysed in this study is publicly available from figshare \cite{huang2020figshare} at \url{https://doi.org/10.6084/m9.figshare.11888115}. The code for data preparation, model training, evaluation and the adapted comparison pipeline, the frozen element list, the split fingerprints and all result tables are archived on Zenodo \cite{patel2026batteryprediction} (version v1.0.0) at \url{https://doi.org/10.5281/zenodo.24500203} and developed at \url{https://github.com/sunraj-patel/battery-prediction}. The adapted pipelines reuse code from \url{https://github.com/lamalab-org/clever-materials-hans} (MIT licence) and data files from \url{https://github.com/ZoraZhuang/battery_datasets} (GPL-3.0).
+\section*{Author Information}
+\subsection*{Corresponding Author}
+Sunraj Patel -- Department of Materials Science and Engineering, Indian Institute of Technology Kanpur, Kanpur 208016, India; Email: sunrajpatelcph@gmail.com
+\subsection*{Author Contributions}
+S.P.: conceptualisation, data curation, formal analysis, investigation, methodology, software, validation, visualisation, writing -- original draft, and writing -- review and editing.
+\subsection*{Notes}
+The author declares no competing financial interest.
 
-\section*{Declaration of generative AI use}
-During the preparation of this work, the author used Claude and Gemini to audit the code, clean
-up the final pipeline, format the manuscript, and improve its language. The author reviewed and edited the
-resulting content and takes full responsibility for the content of the published article
+\begin{acknowledgement}
+This research did not receive any specific grant from funding agencies in the public, commercial or not-for-profit sectors. Computations were performed in part on PARAM Sanganak, provided under the National Supercomputing Mission (NSM), Government of India. The author thanks Shu Huang and Jacqueline M.\ Cole for releasing the battery database, and Kevin Maik Jablonka and Zixin Zhuang and Amanda S.\ Barnard for making their code and data public. During the preparation of this work, the author used Claude and Gemini to audit the code, clean up the final pipeline, format the manuscript, and improve its language. The author reviewed and edited the resulting content and takes full responsibility for the content of the published article.
+\end{acknowledgement}
 
-\section*{Acknowledgements}
-This research did not receive any specific grant from funding agencies in the public, commercial or not-for-profit sectors. Computations were performed in part on PARAM Sanganak, provided under the National Supercomputing Mission (NSM), Government of India. The author thanks Shu Huang and Jacqueline M.\ Cole for releasing the battery database, and Kevin Maik Jablonka and Zixin Zhuang and Amanda S.\ Barnard for making their code and data public.
-
-\bibliographystyle{elsarticle-num}
 \bibliography{references_battery}
 
 \end{document}

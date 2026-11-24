@@ -1,4 +1,4 @@
-"""Table-of-contents graphic (8 cm x 4 cm) -> paper/figures/toc.png, from results/summary_full.csv and leakage_channels.csv."""
+"""Table-of-contents graphic (ACS: at most 3.25 in x 1.75 in, sans serif >= 6 pt) -> paper/figures/toc.png, from results/summary_full.csv and leakage_channels.csv."""
 from pathlib import Path
 
 import matplotlib
@@ -13,8 +13,8 @@ T = ["capacity", "voltage", "energy"]
 LAB = {"capacity": "Capacity", "voltage": "Voltage", "energy": "Energy"}
 E = S[(S.tier == "t2") & (S.variant == "all") & (S.model == "ens")].set_index(["target", "protocol"]).r2
 
-plt.rcParams.update({"font.size": 6.5, "axes.spines.top": False, "axes.spines.right": False})
-fig, ax = plt.subplots(1, 2, figsize=(8 / 2.54, 4 / 2.54))
+plt.rcParams.update({"font.family": "sans-serif", "font.sans-serif": ["Arial", "Helvetica"], "font.size": 7, "axes.spines.top": False, "axes.spines.right": False})
+fig, ax = plt.subplots(1, 2, figsize=(3.25, 1.75))
 prot = [("random", "Random", "#9DB4CF"), ("doi", "DOI", "#2F5D8A"), ("temporal", "Time", "#C97B4A"),
         ("material", "Compos.", "#6BAF7C")]
 for i, t in enumerate(T):
@@ -22,15 +22,16 @@ for i, t in enumerate(T):
         if (t, p) in E.index:
             ax[0].bar(i + (j - 1.5) * 0.2, E[(t, p)], 0.19, color=c, label=lab if i == 0 else None)
 ax[0].set_xticks(range(len(T))); ax[0].set_xticklabels([LAB[t] for t in T]); ax[0].set_ylabel("$R^2$")
-ax[0].set_title("Split protocol", fontsize=6.5); ax[0].legend(frameon=False, fontsize=5, ncol=2, loc="upper right")
-ax[0].set_ylim(0, 0.75)
+ax[0].set_title("Split protocol", fontsize=6.5); ax[0].legend(frameon=False, fontsize=6, ncol=4, loc="upper center", handlelength=0.8, columnspacing=0.5, handletextpad=0.3, bbox_to_anchor=(0.58, 1.02))
+ax[0].set_ylim(0, 0.68)
 for i, t in enumerate(T):
     r = C.loc[(t, "doi")]
-    ax[1].bar(i - 0.15, r.r2_rep, 0.3, color="#B5505A", label="value seen in\nanother paper" if i == 0 else None)
+    ax[1].bar(i - 0.15, r.r2_rep, 0.3, color="#B5505A", label="repeated value" if i == 0 else None)
     ax[1].bar(i + 0.15, r.r2_new, 0.3, color="#5A6B7B", label="new value" if i == 0 else None)
-ax[1].set_xticks(range(len(T))); ax[1].set_xticklabels([LAB[t] for t in T]); ax[1].set_ylim(0, 0.9)
-ax[1].set_title("DOI-grouped test records", fontsize=6.5); ax[1].legend(frameon=False, fontsize=5, loc="upper right")
+ax[1].set_xticks(range(len(T))); ax[1].set_xticklabels([LAB[t] for t in T]); ax[1].set_ylim(0, 0.98)
+ax[1].set_title("DOI-grouped test records", fontsize=6.5); ax[1].legend(frameon=False, fontsize=6, ncol=2, loc="upper center", handlelength=0.8, columnspacing=0.6, handletextpad=0.3, bbox_to_anchor=(0.5, 1.02))
 fig.tight_layout(pad=0.3)
 out = ROOT / "paper" / "figures" / "toc.png"
 fig.savefig(out, dpi=600)
+fig.savefig(out.with_suffix(".tif"), dpi=600, pil_kwargs={"compression": "tiff_lzw"})
 print(out)
