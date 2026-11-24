@@ -56,7 +56,7 @@ python scripts/07_previous_pipelines.py # Jablonka (2026) pipeline adapted to ou
 python scripts/10_figures.py           # data figures -> paper/figures/fig_*.{pdf,png}
 python scripts/11_schematics.py        # TikZ schematics in paper/figures_src/ -> paper/figures/ (needs tectonic)
 python scripts/06_fill_paper.py        # paper/{ml,supplementary}_template.tex -> paper/{ml,supplementary}.tex
-bash make_submission.sh                # all of the above + every PDF (tectonic) -> submission/
+bash make_submission.sh                # all of the above + every PDF (tectonic) + ACS single-file source (scripts/13_acs_source.py) -> submission/
 ```
 
 Edit prose only in the `*_template.tex` files; `ml.tex` and `supplementary.tex` are generated. Remaining red `\TBD`

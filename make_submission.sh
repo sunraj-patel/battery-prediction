@@ -18,7 +18,11 @@ cp -r paper/ml.tex paper/supplementary.tex paper/cover_letter.tex paper/referenc
   for f in ml supplementary cover_letter; do
     tectonic --keep-intermediates --keep-logs $f.tex > $f.tectonic.out 2>&1 || { echo "$f: tectonic FAILED"; tail -20 $f.tectonic.out; exit 1; }
     echo "$f: $(grep -c '^!' $f.log) LaTeX errors; $(grep -ci 'undefined' $f.log) undefined refs/cites"; done )
-cp "$BUILD/ml.pdf" $OUT/Patel_Manuscript.pdf
+# ACS single-file source (minimal packages, no custom macros, references inlined) -> compiled again for the PDF
+python3 scripts/13_acs_source.py "$BUILD" "$BUILD/acs"
+( cd "$BUILD/acs" && tectonic --keep-logs Patel_Manuscript.tex > tectonic.out 2>&1 || { echo "ACS source: tectonic FAILED"; tail -20 tectonic.out; exit 1; }
+  echo "ACS source: $(grep -c '^!' Patel_Manuscript.log) LaTeX errors; $(grep -ci 'undefined' Patel_Manuscript.log) undefined refs/cites" )
+cp "$BUILD/acs/Patel_Manuscript.pdf" $OUT/Patel_Manuscript.pdf
 cp "$BUILD/supplementary.pdf" $OUT/Patel_SupportingInformation.pdf
 # figures, numbered as in the manuscript (numbers read from ml.aux)
 for pair in cell:battery_cell workflow:workflow dist:fig_target_distributions split:fig_split_by_target \
@@ -29,7 +33,7 @@ for pair in cell:battery_cell workflow:workflow dist:fig_target_distributions sp
 done
 cp paper/figures/toc.png $OUT/Patel_TOC_graphic.png; cp paper/figures/toc.tif $OUT/Patel_TOC_graphic.tif
 cp "$BUILD/cover_letter.pdf" $OUT/Patel_CoverLetter.pdf
-( cd "$BUILD" && zip -qr latex_source.zip ml.tex supplementary.tex references_battery.bib ml.bbl supplementary.bbl figures figures_src )
+( cd "$BUILD/acs" && zip -qr ../latex_source.zip Patel_Manuscript.tex references_battery.bib figures )
 cp "$BUILD/latex_source.zip" $OUT/Patel_LaTeX_source.zip
 # code + processed data + result tables (no raw database: it is on figshare; no per-record predictions or models)
 zip -qr $OUT/Patel_Code_and_data.zip README.md DESIGN.md requirements.txt src scripts cluster/*.py cluster/*.sh cluster/*.sbatch \
